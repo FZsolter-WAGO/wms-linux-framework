@@ -35,15 +35,15 @@ echo -e ""
 echo -e "${GN}WattsON Linux framework installer for Debian 11 (bullseye), 10 (bullseye) or Ubuntu 22.04 (jammy)${NC}"
 echo -e "${YW}Are you sure about running this script? It will install several packages via apt.${NC} (y/n)"
 # The only user input we need, a consent
-read CONSENT
-case "$CONSENT" in
-    y|Y)
-    ;;
-    *)
-    echo -e "${RD}[ERR]${NC} Installation canceled"
-    exit -1
-    ;;
-esac
+#read CONSENT
+#case "$CONSENT" in
+#    y|Y)
+#    ;;
+#    *)
+#    echo -e "${RD}[ERR]${NC} Installation canceled"
+#    exit -1
+#    ;;
+#esac
 
 # apt will be used and many other things
 # Only root can run the script
