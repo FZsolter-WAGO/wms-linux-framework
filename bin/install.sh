@@ -33,18 +33,6 @@ NC='\033[0m'
 
 echo -e ""
 echo -e "${GN}WattsON Linux framework installer for Debian 11 (bullseye), 10 (bullseye) or Ubuntu 22.04 (jammy)${NC}"
-echo -e "${YW}Are you sure about running this script? It will install several packages via apt.${NC} (y/n)"
-# The only user input we need, a consent
-#read CONSENT
-#case "$CONSENT" in
-#    y|Y)
-#    ;;
-#    *)
-#    echo -e "${RD}[ERR]${NC} Installation canceled"
-#    exit -1
-#    ;;
-#esac
-
 # apt will be used and many other things
 # Only root can run the script
 if [ "$EUID" -ne 0 ]
@@ -52,6 +40,20 @@ then
     echo -e "${RD}[ERR]${NC} Please run as root"
     exit -1
 fi
+echo -e "${YW}Are you sure about running this script? It will install several packages via apt.${NC}"
+echo -e "${YW}Terminate with Ctrl+C to cancel, or wait 10 seconds to continue${NC}"
+# The only user input we need, a consent
+sleep 5
+echo -e "${YW}[INFO]${NC} 5"
+sleep 1
+echo -e "${YW}[INFO]${NC} 4"
+sleep 1
+echo -e "${YW}[INFO]${NC} 3"
+sleep 1
+echo -e "${YW}[INFO]${NC} 2"
+sleep 1
+echo -e "${YW}[INFO]${NC} 1"
+sleep 1
 echo -e "${YW}[INFO]${NC} apt update"
 if ! apt -qq update &>/dev/null
 then
