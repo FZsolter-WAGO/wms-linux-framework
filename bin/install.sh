@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #####################################################################
 #                                                                   #
 #   WattsON Linux framework installer for Debian 11 (bullseye)      #
