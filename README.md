@@ -4,5 +4,5 @@
 
 Usage
 ```
-wget -qO- https://raw.githubusercontent.com/FZsolter-WAGO/wattson-linux-framework/main/bin/install.sh | bash
+curl -s https://raw.githubusercontent.com/FZsolter-WAGO/wattson-linux-framework/main/bin/install.sh | sudo bash
 ```
