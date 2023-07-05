@@ -36,7 +36,7 @@ echo -e "${GN}WattsON Linux framework installer for Debian 11 (bullseye), 10 (bu
 echo -e "${YW}Are you sure about running this script? It will install several packages via apt.${NC} (y/n)"
 # The only user input we need, a consent
 read answer
-case $answer in
+case "$answer" in
     y|Y)
     ;;
     *)
