@@ -23,6 +23,11 @@
 #               Creating a MariaDB 'wattson'@'localhost' user       #
 #                   with a random password for the app              #
 #                                                                   #
+#   1.0.1   -   Day two of working on this script                   #
+#               Now the script only runs if it can find the tar.gz  #
+#                   WattsON self-host installer package. This has   #
+#                   to be provided by the user.                     #
+#                                                                   #
 #####################################################################
 
 # Global color variables
@@ -31,8 +36,11 @@ YW='\033[0;33m'
 RD='\033[0;31m'
 NC='\033[0m'
 
+# Global constants
+readonly SUPPORTED_WATTSON_VERSIONS=("3.1.4.25" "3.1.4.27")
+
 echo -e ""
-echo -e "${GN}WattsON Linux framework installer for Debian 11 (bullseye), 10 (bullseye) or Ubuntu 22.04 (jammy)${NC}"
+echo -e "${GN}WattsON Linux framework and software installer for Debian 11 (bullseye), 10 (bullseye) or Ubuntu 22.04 (jammy)${NC}"
 # apt will be used and many other things
 # Only root can run the script
 if [ "$EUID" -ne 0 ]
@@ -40,9 +48,41 @@ then
     echo -e "${RD}[ERR]${NC} Please run as root"
     exit -1
 fi
+if test -f /var/www/wattson/.env.local
+then
+    echo -e "${RD}[ERR]${NC} WattsON already installed! Create backups manualy, then remove /var/www/wattson folder to use this script"
+    exit -1
+fi
+# The script only works if there is a wattson_X.tar.gz package provided by the user in the current directory
+echo -e "${YW}[INFO]${NC} Looking for ./wattson_X.tar.gz"
+FOUND_PACKAGE=$(ls ./ 2>/dev/null | grep wattson_ | grep .tar.gz | tail -1)
+if [ -z "$FOUND_PACKAGE" ]
+then
+    echo -e "${RD}[ERR]${NC} Can not find package"
+    exit -1
+fi
+FOUND_PACKAGE=./"$FOUND_PACKAGE"
+match=false
+# Checking for supported versions in the filename
+for version in "_${SUPPORTED_WATTSON_VERSIONS[@]/%/.}"; do
+    if [[ $FOUND_PACKAGE == *"$version"* ]]; then
+        echo -e "${YW}[INFO]${NC} Found wattson${version}tar.gz"
+        match=true
+        break
+    fi
+done
+if ! $match
+then
+    echo -e "${RD}[ERR]${NC} No supported version found"
+    exit -1
+fi
+
 echo -e "${YW}Are you sure about running this script? It will install several packages via apt.${NC}"
-echo -e "${YW}Terminate with Ctrl+C to cancel, or wait 10 seconds to continue${NC}"
+echo -e "${YW}!!! It will also purge any existing WattsON installation (dropping databases, removing /var/www/wattson) !!!${NC}"
+echo -e "${YW}Terminate with Ctrl+C to cancel, or wait 20 seconds to continue${NC}"
 # The only user input we need, a consent
+sleep 10
+echo -e "${YW}[INFO]${NC} 10"
 sleep 5
 echo -e "${YW}[INFO]${NC} 5"
 sleep 1
@@ -54,6 +94,27 @@ echo -e "${YW}[INFO]${NC} 2"
 sleep 1
 echo -e "${YW}[INFO]${NC} 1"
 sleep 1
+echo -e "${GN}[SNEK]${NC}                                                                                                 /*  
+${GN}[SNEK]${NC}                                                                                              (@/    
+${GN}[SNEK]${NC}                                             ......,,,,,,,,...                           .//&#/       
+${GN}[SNEK]${NC}                                     .(@@#*.                  *(@@#,..           ,(%@#./@.           
+${GN}[SNEK]${NC}                               ./((*.                                 ,///*,,.. .////.               
+${GN}[SNEK]${NC}                          .,/@/          ...,(&&&#((,,,,,,,/%&&@@&(//(&#&@@&#*                       
+${GN}[SNEK]${NC}                    /##(,         ,/(*//*                                                            
+${GN}[SNEK]${NC}                 #%            #@                                                                    
+${GN}[SNEK]${NC}              .%. *     *     **                                                                     
+${GN}[SNEK]${NC}             *(               #.                                                                     
+${GN}[SNEK]${NC}             #.              //                                                                      
+${GN}[SNEK]${NC}             .@   /        @                                                                        
+${GN}[SNEK]${NC}               ,%/,,,,*///*                                                                          
+${GN}[SNEK]${NC}              ##%                                                                                    
+${GN}[SNEK]${NC}           ,##%,                                                                                     
+${GN}[SNEK]${NC}         .%##/                                                                                       
+${GN}[SNEK]${NC}        /###%                                                                                        
+${GN}[SNEK]${NC}      .%##%#%                                                                                        
+${GN}[SNEK]${NC}     /,   .%#                                                                                        
+${GN}[SNEK]${NC}           (#                                                                                        
+${GN}[SNEK]${NC}                                                                                                     "
 echo -e "${YW}[INFO]${NC} apt update"
 if ! apt -qq update &>/dev/null
 then
@@ -133,7 +194,7 @@ then
 fi
 if [ -z "$(grep -n 'ServerName 127.0.0.1' /etc/apache2/apache2.conf 2>/dev/null)" ]
 then
-    echo "ServerName 127.0.0.1" >> /etc/apache2/apache2.conf &>/dev/null
+    echo "ServerName 127.0.0.1" >> /etc/apache2/apache2.conf
 fi
 /usr/sbin/a2enmod php8.1 rewrite alias setenvif socache_shmcb &>/dev/null
 # The default 80 and 443 ports are used by the default example sites provided by the vendor. Removing them.
@@ -142,7 +203,7 @@ then
     /usr/sbin/a2dissite $(ls /etc/apache2/sites-available/) &>/dev/null
 fi
 rm /etc/apache2/sites-available/* &>/dev/null
-echo "" > /etc/apache2/ports.conf &>/dev/null
+echo "" > /etc/apache2/ports.conf
 
 # Let's drop the user if it exists, and recreate it with a random password
 echo -e "${YW}[INFO]${NC} Setting up MariaDB"
@@ -152,22 +213,48 @@ then
     exit -1
 fi
 mysql -u root -Bse "DROP USER 'wattson'@'localhost';" &>/dev/null
+mysql -u root -Bse "DROP DATABASE wattson_system;" &>/dev/null
+mysql -u root -Bse "DROP DATABASE wattson_management;" &>/dev/null
 MYSQL_PASS="$(openssl rand -base64 12)"
 mysql -u root -Bse "CREATE USER 'wattson'@'localhost' IDENTIFIED BY '$MYSQL_PASS';GRANT ALL ON *.* TO 'wattson'@'localhost';" &>/dev/null
 
 # The php.ini files have to be modified, and we must provide the SourceGuardian loader
 echo -e "${YW}[INFO]${NC} Setting up PHP8.1"
 curl -sSLo /usr/lib/php/20210902/ixed.8.1.lin https://raw.githubusercontent.com/FZsolter-WAGO/wattson-linux-framework/main/src/ixed.8.1.lin &>/dev/null
-echo "extension=ixed.8.1.lin" >> /etc/php/8.1/apache2/php.ini &>/dev/null
+if [ -z "$(grep -n 'extension=ixed.8.1.lin' /etc/php/8.1/apache2/php.ini 2>/dev/null)" ]
+then
+    echo "extension=ixed.8.1.lin" >> /etc/php/8.1/apache2/php.ini
+fi
 sed -i 's/.*upload_max_filesize.*/upload_max_filesize = 256M/' /etc/php/8.1/apache2/php.ini &>/dev/null
 sed -i 's/.*post_max_size = .*/post_max_size = 512M/' /etc/php/8.1/apache2/php.ini &>/dev/null
 sed -i 's/.*memory_limit = .*/memory_limit = 1024M/' /etc/php/8.1/apache2/php.ini &>/dev/null
 sed -i 's/.*max_input_vars = .*/max_input_vars = 1000/' /etc/php/8.1/apache2/php.ini &>/dev/null
 sed -i 's/.*file_uploads = O.*/file_uploads = On/' /etc/php/8.1/apache2/php.ini &>/dev/null
-echo "extension=ixed.8.1.lin" >> /etc/php/8.1/cli/php.ini &>/dev/null
+if [ -z "$(grep -n 'extension=ixed.8.1.lin' /etc/php/8.1/cli/php.ini 2>/dev/null)" ]
+then
+    echo "extension=ixed.8.1.lin" >> /etc/php/8.1/cli/php.ini
+fi
 sed -i 's/.*memory_limit.*/memory_limit = -1/' /etc/php/8.1/cli/php.ini &>/dev/null
 
 # Everything should be fine, we can continue with the WattsON self-host installation
-echo -e "${GN}[OK]${NC} Done! New database user created: 'wattson'@'localhost' IDENTIFIED BY '${YW}$MYSQL_PASS${NC}'"
+echo -e "${YW}[INFO]${NC} New database user created: 'wattson'@'localhost' IDENTIFIED BY '${YW}$MYSQL_PASS${NC}'"
+
+# Framework install completed, continue with WattsON
+echo -e "${YW}[INFO]${NC} Unpacking package to /var/www/wattson"
+if [ -z "$(which tar 2>/dev/null)" ]
+then
+    echo -e "${YW}[INFO]${NC} Installing tar and gzip"
+    apt -qq install -y tar gzip &>/dev/null
+    exit -1
+fi
+rm /var/www/wattson -Rf &>/dev/null
+tar -zxf $FOUND_PACKAGE -C /var/www/ &>/dev/null
+
+# Let's start with the documented WattsON installation
+cd /var/www/wattson
+echo -e "${YW}[INFO]${NC} Self-hosted-install script starting, you are on your own now..."
+php bin/console app:installer:self-hosted-install --env=dev
+echo -e "\n${YW}[INFO]${NC} Self-hosted-install script finished"
+echo -e "${YW}[INFO]${NC} This installer terminates here, continue the process manually"
 echo -e ""
 exit 0
