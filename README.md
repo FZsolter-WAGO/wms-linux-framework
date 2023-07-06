@@ -3,6 +3,7 @@
 ## Only Debian 10/11 and Ubuntu 22.04 are supported!
 
 Anything can have a mascot
+
 ![snek](snek.png)
 
 ### Usage
