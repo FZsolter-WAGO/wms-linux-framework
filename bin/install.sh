@@ -252,9 +252,7 @@ tar -zxf $FOUND_PACKAGE -C /var/www/ &>/dev/null
 
 # Let's start with the documented WattsON installation
 cd /var/www/wattson
-echo -e "${YW}[INFO]${NC} Self-hosted-install script starting, you are on your own now..."
-php bin/console app:installer:self-hosted-install --env=dev
-echo -e "\n${YW}[INFO]${NC} Self-hosted-install script finished"
+echo -e "${YW}[INFO]${NC} You have to run 'php bin/console app:installer:self-hosted-install --env=dev' inside /var/www/wattson, you are on your own now..."
 echo -e "${YW}[INFO]${NC} This installer terminates here, continue the process manually"
 echo -e ""
 exit 0
