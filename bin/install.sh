@@ -28,7 +28,15 @@
 #                   WattsON self-host installer package. This has   #
 #                   to be provided by the user.                     #
 #                                                                   #
+#   1.0.2   -   Things I have learnt from get.docker.com            #
+#               Warp up the whole script into a function, so the    #
+#                   user is protected if the file is not            #
+#                   downloaded correctly                            #
+#                                                                   #
 #####################################################################
+
+# Wrapper function added in 1.0.2
+function wattson_framework_installer {
 
 # Global color variables
 GN='\033[0;32m'
@@ -256,3 +264,8 @@ echo -e "${YW}[INFO]${NC} You have to run 'php bin/console app:installer:self-ho
 echo -e "${YW}[INFO]${NC} This installer terminates here, continue the process manually"
 echo -e ""
 exit 0
+
+}
+
+# Wrapper function added in 1.0.2
+wattson_framework_installer
