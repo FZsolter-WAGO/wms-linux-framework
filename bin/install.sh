@@ -33,6 +33,9 @@
 #                   user is protected if the file is not            #
 #                   downloaded correctly                            #
 #                                                                   #
+#   1.0.3   -   New week, new ideas                                 #
+#               wattson_post_config added to /bin/                  #
+#                                                                   #
 #####################################################################
 
 # Wrapper function added in 1.0.2
@@ -257,6 +260,10 @@ then
 fi
 rm /var/www/wattson -Rf &>/dev/null
 tar -zxf $FOUND_PACKAGE -C /var/www/ &>/dev/null
+
+echo -e "${YW}[INFO]${NC} Downloading the newest version of wattson_post_config to /bin/"
+curl -sSLo /bin/wattson_post_config https://raw.githubusercontent.com/FZsolter-WAGO/wattson-linux-framework/main/src/wattson_post_config &>/dev/null
+chmod 700 /bin/wattson_post_config
 
 # Let's start with the documented WattsON installation
 cd /var/www/wattson
