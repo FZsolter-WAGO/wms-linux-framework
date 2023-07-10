@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Global color variables
+GN='\033[0;32m'
+YW='\033[0;33m'
+RD='\033[0;31m'
+NC='\033[0m'
+
+if [ ! -e /var/www/wattson/self_hosted/vhost/wattson.conf ]; then
+	echo -e $'\n'${RD}[ERR]${NC} First install the software by executing $'\"'php bin/console app:installer:self-hosted-install --env=dev$'\"' inside the $'\"'/var/www/wattson/$'\"' directory!$'\n';
+	exit -1
+else
+	echo -e $'\n'${YW}[INFO]${NC} WattsOn application is already installed;
+	rm /etc/apache2/sites-available/wattson.conf -f
+	ln /var/www/wattson/self_hosted/vhost/wattson.conf /etc/apache2/sites-available/wattson.conf -s
+	cd /etc/apache2/sites-available
+	echo -e ${YW}[INFO]${NC} $(/usr/sbin/a2ensite wattson.conf)
+	echo -e ${YW}[INFO]${NC} Restarting Apache
+	if [ -n "$(which service 2>/dev/null)" ]
+	then
+		service apache2 stop
+		service apache2 start
+	else
+		systemctl stop apache2
+		systemctl start apache2
+	fi
+	echo -e ${YW}[INFO]${NC} Change owner of the wattson folder to www-data
+	chown www-data:www-data -R /var/www/wattson
+	echo -e ${YW}[INFO]${NC} Change permissions of the wattson folder
+	chmod -R 775 /var/www/wattson
+	chmod -R 777 /var/www/wattson/var
+	chmod -R 777 /var/www/wattson/storage
+	chmod +x /var/www/wattson/mercure/mercure
+	chmod +x /var/www/wattson/bin/commandScheduler.sh
+	echo -e ${YW}[INFO]${NC} Done! Do not forget to add the Mercure startup scripts to crontab!$'\n'
+fi
