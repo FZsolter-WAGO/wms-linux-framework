@@ -1,8 +1,8 @@
 #!/bin/bash
 #####################################################################
 #                                                                   #
-#   WattsON Linux framework installer for Debian 11 (bullseye)      #
-#   or Ubuntu 22.04 (jammy)                                         #
+#   WattsON Linux framework installer for Debian 11 (bullseye),     #
+#   10 (buster) or Ubuntu 22.04 (jammy)                             #
 #                                                                   #
 #   This script should prepare an enviroment for WattsON Energy     #
 #   by installing all the mandatory framework softwares, and        #
@@ -48,7 +48,7 @@ NC='\033[0m'
 readonly SUPPORTED_WATTSON_VERSIONS=("3.1.4.25" "3.1.4.27")
 
 echo -e ""
-echo -e "${GN}WattsON Linux framework and software installer for Debian 11 (bullseye), 10 (bullseye) or Ubuntu 22.04 (jammy)${NC}"
+echo -e "${GN}WattsON Linux framework and software installer for Debian 11 (bullseye), 10 (buster) or Ubuntu 22.04 (jammy)${NC}"
 # apt will be used and many other things
 # Only root can run the script
 if [ "$EUID" -ne 0 ]
