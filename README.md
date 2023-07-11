@@ -29,7 +29,7 @@ Anything can have a mascot
    ```
 8) Access the management site at http://<server_ip>.<management_port>/
 
-### Oneshot script without touching the network settings
+### Oneshot script without touching the network settings; copy to terminal and hit Enter
 ```
 apt purge docker* -y && apt autoremove -y && apt update && apt full-upgrade -y && apt install curl sudo -y && curl -s https://raw.githubusercontent.com/FZsolter-WAGO/wattson-linux-framework/main/bin/install.sh | sudo bash
 ```
