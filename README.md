@@ -10,26 +10,26 @@ Anything can have a mascot
 1) Configure network settings to access the Internet
 
    It is recommended to use a br0 bridge interface with a static MAC address of the primary physical interface (br0=X1+X2 with the MAC of X1)
-3) Remove any Docker installation (the docker0 network interface is constantly changing its MAC address, so the license key will change every time the server is restarted)
+2) Remove any Docker installation (the docker0 network interface is constantly changing its MAC address, so the license key will change every time the server is restarted)
    ```
    apt purge docker* -y && apt autoremove -y
    ```
-4) Update the system, and install curl and sudo
+3) Update the system, and install curl and sudo
    ```
    apt update && apt full-upgrade -y && apt install curl sudo -y
    ```
-5) Run the installer script
+4) Run the installer script
    ```
    curl -s https://raw.githubusercontent.com/FZsolter-WAGO/wattson-linux-framework/main/bin/install.sh | sudo bash
    ```
-6) Continue with WattsON's normal self-host install process
-7) Run the post config script
+5) Continue with WattsON's normal self-host install process
+6) Run the post config script
    ```
    sudo wattson_post_config
    ```
-8) Access the management site at http://<server_ip>.<management_port>/
+7) Access the management site at http://<server_ip>.<management_port>/
 
-### Oneshot script without touching the network settings; copy to terminal and hit Enter
+### Oneshot script for step2-step4; copy to terminal and hit Enter
 ```
 apt purge docker* -y && apt autoremove -y && apt update && apt full-upgrade -y && apt install curl sudo -y && curl -s https://raw.githubusercontent.com/FZsolter-WAGO/wattson-linux-framework/main/bin/install.sh | sudo bash
 ```
