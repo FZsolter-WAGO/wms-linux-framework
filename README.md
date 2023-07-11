@@ -10,8 +10,15 @@ Anything can have a mascot
 
 To run the following command:
 1) Configure network settings to access the Internet
-2) Install curl and sudo (apt install curl sudo)
-3) Remove any docker installation (docker0 network interface keeps changing it's MAC address)
+   It is recommended to use a br0 bridge interface with a static MAC address of the primary physical interface (br0=X1+X2 with the MAC of X1)
+2) Remove any docker installation (docker0 network interface keeps changing it's MAC address and therefore the hardware key needed for licensing keeps changing on every reboot)
+   ```
+   apt purge docker* -y && apt autoremove -y
+   ```
+3) Update the system, and install curl and sudo
+   ```
+   apt update && apt full-upgrade -y && apt install curl sudo -y
+   ```
 
 ```
 curl -s https://raw.githubusercontent.com/FZsolter-WAGO/wattson-linux-framework/main/bin/install.sh | sudo bash
