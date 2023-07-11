@@ -7,8 +7,6 @@ Anything can have a mascot
 ![snek](snek.png)
 
 ### Usage
-
-To run the following command:
 1) Configure network settings to access the Internet
 
    It is recommended to use a br0 bridge interface with a static MAC address of the primary physical interface (br0=X1+X2 with the MAC of X1)
