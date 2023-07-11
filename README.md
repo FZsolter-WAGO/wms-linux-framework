@@ -7,6 +7,12 @@ Anything can have a mascot
 ![snek](snek.png)
 
 ### Usage
+
+To run the following command:
+1) Configure network to access the Internet
+2) Install curl and sudo (apt install curl sudo)
+3) Remove any docker installation (docker0 network interface keeps changing it's MAC address)
+
 ```
 curl -s https://raw.githubusercontent.com/FZsolter-WAGO/wattson-linux-framework/main/bin/install.sh | sudo bash
 ```
