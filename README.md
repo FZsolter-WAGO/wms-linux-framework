@@ -20,9 +20,16 @@ To run the following command:
    ```
    apt update && apt full-upgrade -y && apt install curl sudo -y
    ```
+5) Run the installer script
+   ```
+   curl -s https://raw.githubusercontent.com/FZsolter-WAGO/wattson-linux-framework/main/bin/install.sh | sudo bash
+   ```
+6) Continue with WattsON's normal self-host install process
+7) Run the post config script
+   ```
+   sudo wattson_post_config
+   ```
+8) Access the management site at http://<server_ip>.<management_port>/
 
-```
-curl -s https://raw.githubusercontent.com/FZsolter-WAGO/wattson-linux-framework/main/bin/install.sh | sudo bash
-```
 ### Tip
 This should be used only once during the initial setup of the system, since the recommended way of installing WattsON Energy on Linux is using a fresh new minimized OS install on a dedicated hardware only for this one purpose.
