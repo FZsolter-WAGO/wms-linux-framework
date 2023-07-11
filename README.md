@@ -12,7 +12,7 @@ To run the following command:
 1) Configure network settings to access the Internet
 
    It is recommended to use a br0 bridge interface with a static MAC address of the primary physical interface (br0=X1+X2 with the MAC of X1)
-3) Remove any docker installation (docker0 network interface keeps changing it's MAC address and therefore the hardware key needed for licensing keeps changing on every reboot)
+3) Remove any Docker installation (docker0 network interface keeps changing it's MAC address and therefore the hardware key needed for licensing keeps changing on every reboot)
    ```
    apt purge docker* -y && apt autoremove -y
    ```
