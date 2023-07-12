@@ -27,23 +27,26 @@ Anything can have a mascot
    
    Otherwise navigate to the file with "cd /path/to/package/"
 
-5) Set the locale and timezone of the server
+5) Set the timezone of the server
    ```
-   sudo dpkg-reconfigure locales
    sudo dpkg-reconfigure tzdata
    ```
-6) Run the installer script
+   Setting the system language is optional
+   ```
+   sudo dpkg-reconfigure locales
+   ```
+7) Run the installer script
    ```
    curl -s https://raw.githubusercontent.com/FZsolter-WAGO/wattson-linux-framework/main/bin/install.sh | sudo bash
    ```
    
    If something went wrong, or the password is lost then execute this line again. It will start over the non-framework related part of the installation (dropping the databases and user, cleaning /var/www)
-7) Continue with WattsON's normal self-host install process
-8) Run the post config script
+8) Continue with WattsON's normal self-host install process
+9) Run the post config script
    ```
    sudo wattson_post_config
    ```
-9) Access the management site at http://<server_ip>.<management_port>/
+10) Access the management site at http://<server_ip>.<management_port>/
 
 ### Tip
 This should be used only once during the initial setup of the system, since the recommended way of installing WattsON Energy on Linux is using a fresh new minimized OS install on a dedicated hardware only for this one purpose.
