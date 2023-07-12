@@ -25,7 +25,7 @@ Anything can have a mascot
 
    It is recommended to upload the package to /root/wattson_x.x.x.x.tar.gz using SFTP (with FileZilla for example)
    
-   Otherwise navigate to the file with "cd /path/to/package/wattson_x.x.x.x.tar.gz"
+   Otherwise navigate to the file with "cd /path/to/package/"
 5) Run the installer script
    ```
    curl -s https://raw.githubusercontent.com/FZsolter-WAGO/wattson-linux-framework/main/bin/install.sh | sudo bash
