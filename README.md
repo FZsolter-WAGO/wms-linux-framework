@@ -26,19 +26,19 @@ Anything can have a mascot
    It is recommended to upload the package to /root/wattson_x.x.x.x.tar.gz using SFTP (with FileZilla for example)
    
    Otherwise navigate to the file with "cd /path/to/package/"
-5) Run the installer script
+
+5) Set the locale and timezone of the server
+   ```
+   sudo dpkg-reconfigure locales
+   sudo dpkg-reconfigure tzdata
+   ```
+6) Run the installer script
    ```
    curl -s https://raw.githubusercontent.com/FZsolter-WAGO/wattson-linux-framework/main/bin/install.sh | sudo bash
    ```
    
    If something went wrong, or the password is lost then execute this line again. It will start over the non-framework related part of the installation (dropping the databases and user, cleaning /var/www)
-6) Continue with WattsON's normal self-host install process
-
-   This also means that before running the installer script the timezone and locale of the server has to be set
-   ```
-   sudo dpkg-reconfigure tzdata
-   sudo dpkg-reconfigure locales
-   ``` 
+7) Continue with WattsON's normal self-host install process
 8) Run the post config script
    ```
    sudo wattson_post_config
