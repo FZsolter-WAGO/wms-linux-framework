@@ -23,19 +23,21 @@ Anything can have a mascot
    ```
 4) Upload the desired "wattson_x.x.x.x.tar.gz" package
 
-   It is recommended to upload the package to /root/wattson_x.x.x.x.tar.gz
+   It is recommended to upload the package to /root/wattson_x.x.x.x.tar.gz using SFTP (with FileZilla for example)
    
    Otherwise navigate to the file with "cd /path/to/package/wattson_x.x.x.x.tar.gz"
-6) Run the installer script
+5) Run the installer script
    ```
    curl -s https://raw.githubusercontent.com/FZsolter-WAGO/wattson-linux-framework/main/bin/install.sh | sudo bash
    ```
-7) Continue with WattsON's normal self-host install process
-8) Run the post config script
+   
+   If something went wrong, or the password is lost then execute this line again. It will start over the non-framework related part of the installation (dropping the databases and user, cleaning /var/www)
+6) Continue with WattsON's normal self-host install process
+7) Run the post config script
    ```
    sudo wattson_post_config
    ```
-9) Access the management site at http://<server_ip>.<management_port>/
+8) Access the management site at http://<server_ip>.<management_port>/
 
 ### Tip
 This should be used only once during the initial setup of the system, since the recommended way of installing WattsON Energy on Linux is using a fresh new minimized OS install on a dedicated hardware only for this one purpose.
