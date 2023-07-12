@@ -31,7 +31,7 @@ Anything can have a mascot
    ```
    sudo dpkg-reconfigure tzdata
    ```
-   Setting the system language is optional
+   Change the system language (optional, en_US.UTF-8 is recommended)
    ```
    sudo dpkg-reconfigure locales
    ```
