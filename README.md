@@ -7,6 +7,12 @@ Anything can have a mascot
 ![snek](snek.png)
 
 ### Usage
+
+### TL;DR, Oneshot script for step2-step4; copy to terminal and hit Enter
+```
+apt purge docker* -y && apt autoremove -y && apt update && apt full-upgrade -y && apt install curl sudo -y && curl -s https://raw.githubusercontent.com/FZsolter-WAGO/wattson-linux-framework/main/bin/install.sh | sudo bash
+```
+
 1) Configure network settings to access the Internet
 
    It is recommended to use a br0 bridge interface with a static MAC address of the primary physical interface (br0=X1+X2 with the MAC of X1)
@@ -28,11 +34,6 @@ Anything can have a mascot
    sudo wattson_post_config
    ```
 7) Access the management site at http://<server_ip>.<management_port>/
-
-### Oneshot script for step2-step4; copy to terminal and hit Enter
-```
-apt purge docker* -y && apt autoremove -y && apt update && apt full-upgrade -y && apt install curl sudo -y && curl -s https://raw.githubusercontent.com/FZsolter-WAGO/wattson-linux-framework/main/bin/install.sh | sudo bash
-```
 
 ### Tip
 This should be used only once during the initial setup of the system, since the recommended way of installing WattsON Energy on Linux is using a fresh new minimized OS install on a dedicated hardware only for this one purpose.
