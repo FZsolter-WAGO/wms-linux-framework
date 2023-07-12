@@ -45,7 +45,7 @@ Anything can have a mascot
 7) Continue with WattsON's normal self-host install process
 8) Run the post config script
    ```
-   sudo wattson_post_config
+   wattson_post_config
    ```
 9) Access the management site at http://<server_ip>.<management_port>/
 
