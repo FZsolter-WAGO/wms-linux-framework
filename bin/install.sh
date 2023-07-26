@@ -39,6 +39,8 @@
 #   1.0.4   -   Cosmetics                                           #
 #               Modified snek to fit into 80 charaters              #
 #                                                                   #
+#   1.0.5   -   18 char random password instead of 12 for MariaDB   #
+#                                                                   #
 #####################################################################
 
 # Wrapper function added in 1.0.2
@@ -228,7 +230,7 @@ fi
 mysql -u root -Bse "DROP USER 'wattson'@'localhost';" &>/dev/null
 mysql -u root -Bse "DROP DATABASE wattson_system;" &>/dev/null
 mysql -u root -Bse "DROP DATABASE wattson_management;" &>/dev/null
-MYSQL_PASS="$(openssl rand -base64 12)"
+MYSQL_PASS="$(openssl rand -base64 18)"
 mysql -u root -Bse "CREATE USER 'wattson'@'localhost' IDENTIFIED BY '$MYSQL_PASS';GRANT ALL ON *.* TO 'wattson'@'localhost';" &>/dev/null
 
 # The php.ini files have to be modified, and we must provide the SourceGuardian loader
