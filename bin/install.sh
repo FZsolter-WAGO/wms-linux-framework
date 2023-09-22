@@ -41,6 +41,9 @@
 #                                                                   #
 #   1.0.5   -   18 char random password instead of 12 for MariaDB   #
 #                                                                   #
+#   1.0.6   -   Special characters are no longer allowed            #
+#                   for passwords (base64 -> hex)                   #
+#                                                                   #
 #####################################################################
 
 # Wrapper function added in 1.0.2
@@ -230,7 +233,7 @@ fi
 mysql -u root -Bse "DROP USER 'wattson'@'localhost';" &>/dev/null
 mysql -u root -Bse "DROP DATABASE wattson_system;" &>/dev/null
 mysql -u root -Bse "DROP DATABASE wattson_management;" &>/dev/null
-MYSQL_PASS="$(openssl rand -base64 18)"
+MYSQL_PASS="$(openssl rand -hex 18)"
 mysql -u root -Bse "CREATE USER 'wattson'@'localhost' IDENTIFIED BY '$MYSQL_PASS';GRANT ALL ON *.* TO 'wattson'@'localhost';" &>/dev/null
 
 # The php.ini files have to be modified, and we must provide the SourceGuardian loader
