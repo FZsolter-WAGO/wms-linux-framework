@@ -216,7 +216,6 @@ else
     echo -e "${YW}[INFO]${NC} PHP8.1 already installed"
 fi
 # The PHP extension install line will run every time, since it is a bit harder to check for them one-by-one
-# Copypaste from the installation manual. Many of these are already installed, or does not exist at all.
 apt -qq install -y php8.1-amqp php8.1-apcu php8.1-bcmath php8.1-bz2 php8.1-calendar php8.1-ctype php8.1-curl php8.1-dom php8.1-exif php8.1-FFI php8.1-fileinfo php8.1-ftp php8.1-gd php8.1-gettext php8.1-iconv php8.1-imagick php8.1-intl php8.1-mbstring php8.1-memcache php8.1-mysqli php8.1-mysqlnd php8.1-PDO php8.1-Phar php8.1-posix php8.1-readline php8.1-shmop php8.1-SimpleXML php8.1-sockets php8.1-sqlite3 php8.1-sysvmsg php8.1-sysvsem php8.1-sysvshm php8.1-tokenizer php8.1-xdebug php8.1-xml php8.1-xmlreader php8.1-xmlwriter php8.1-xsl php8.1-zip &>/dev/null
 
 # Modifying configuration files, and other settings
