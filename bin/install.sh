@@ -347,7 +347,7 @@ chmod 700 /bin/wms_post_config
 
 # Let's start with the documented WMS installation
 cd /var/www/wattson
-echo -e "${YW}[INFO]${NC} You have to run 'php bin/console app:installer:self-hosted-install --env=dev' inside /var/www/wattson, you are on your own now..."
+echo -e "${YW}[INFO]${NC} You have to run '${YW}php bin/console app:installer:self-hosted-install --env=dev${NC}' inside /var/www/wattson, you are on your own now..."
 echo -e "${YW}[INFO]${NC} This installer terminates here, continue the process manually"
 echo -e ""
 exit 0
