@@ -1,4 +1,6 @@
-﻿# WAGO Monitoring Solution Linux framework installer
+-# Work in progress, do not use!
+ 
+# WAGO Monitoring Solution Linux framework installer
 
 ## Only Debian 10/11 and Ubuntu 22.04 are supported!
 
