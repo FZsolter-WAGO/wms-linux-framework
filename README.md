@@ -22,6 +22,13 @@ Anything can have a mascot
    ```
    apt update && apt full-upgrade -y && apt install curl -y
    ```
+5) Install MySQL server (for recent versions visit https://dev.mysql.com/doc/mysql-apt-repo-quick-guide/en/)
+   ```
+   wget https://dev.mysql.com/get/mysql-apt-config_0.8.26-1_all.deb
+   apt install ./mysql-apt-config_0.8.26-1_all.deb
+   rm ./mysql-apt-config_0.8.26-1_all.deb
+   apt update && apt install mysql-server
+   ```
 5) Upload the desired "wms_x.x.x.tar.gz" package
 
    It is recommended to upload the package to /root/wms_x.x.x.tar.gz using SFTP (with FileZilla for example)
