@@ -1,4 +1,4 @@
--# Work in progress, do not use!
+# Work in progress, do not use!
  
 # WAGO Monitoring Solution Linux framework installer
 
