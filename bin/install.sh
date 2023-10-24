@@ -91,7 +91,7 @@ match=false
 # Checking for supported versions in the filename
 for version in "_${SUPPORTED_WMS_VERSIONS[@]/%/.}"; do
     if [[ $FOUND_PACKAGE == *"$version"* ]]; then
-        echo -e "${YW}[INFO]${NC} Found wms${version}tar.gz"
+        echo -e "${YW}[INFO]${NC} Found wms_${version}tar.gz"
         match=true
         break
     fi
@@ -200,10 +200,11 @@ fi
 if [ -z "$(which mysql 2>/dev/null)" ]
 then
     echo -e "${YW}[INFO]${NC} Installing MySQL"
-    wget https://dev.mysql.com/get/mysql-apt-config_0.8.26-1_all.deb
-    dpkg -i ./mysql-apt-config_0.8.26-1_all.deb
-    rm ./mysql-apt-config_0.8.26-1_all.deb
-    apt update && apt install mysql-server -y
+    curl -sSLo ./mysql-apt-config.deb https://dev.mysql.com/get/mysql-apt-config_0.8.26-1_all.deb &>/dev/null
+    dpkg -i ./mysql-apt-config.deb &>/dev/null
+    rm ./mysql-apt-config.deb &>/dev/null
+    apt -qq update &>/dev/null
+    apt -qq install mysql-server -y &>/dev/null
 else
     echo -e "${YW}[INFO]${NC} MySQL already installed"
 fi
