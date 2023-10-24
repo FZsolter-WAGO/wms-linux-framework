@@ -91,8 +91,7 @@ match=false
 # Checking for supported versions in the filename
 for version in "_${SUPPORTED_WMS_VERSIONS[@]/%/.}"; do
     if [[ $FOUND_PACKAGE == *"$version"* ]]; then
-        echo "$version"
-        echo -e "${YW}[INFO]${NC} Found wms_${version}.tar.gz"
+        echo -e "${YW}[INFO]${NC} Found wms_${version}tar.gz"
         match=true
         break
     fi
