@@ -10,27 +10,25 @@ Anything can have a mascot
 
 ### Usage
 
-0) Login as root via SSH, or in case of WAGO 752-9xxx Edge Computer via browser at https://<server_ip>:9090/
+0) Login as root via SSH, or in case of WAGO 752-9xxx Edge Computer via browser at https://<server_ip>:9090/ using the Cockpit web application
 1) Configure network settings to access the Internet
-
-   It is recommended to use a br0 bridge interface with a static MAC address of the primary physical interface (br0=X1+X2 with the MAC of X1)
-2) Remove any Docker installation (the docker0 network interface is constantly changing its MAC address, so the license key will change every time the server is restarted)
+3) Remove any Docker installation (the docker0 network interface is constantly changing its MAC address, so the license key will change every time the server is restarted)
 
    Reboot when the uninstallation is complete
    ```
    apt purge docker* -y && apt autoremove -y && reboot
    ```
-3) Update the system, and install curl
+4) Update the system, and install curl
    ```
    apt update && apt full-upgrade -y && apt install curl -y
    ```
-4) Upload the desired "wms_x.x.x.tar.gz" package
+5) Upload the desired "wms_x.x.x.tar.gz" package
 
    It is recommended to upload the package to /root/wms_x.x.x.tar.gz using SFTP (with FileZilla for example)
    
    Otherwise navigate to the file with "cd /path/to/package/" in the terminal
 
-5) Set the timezone of the server
+6) Set the timezone of the server
    ```
    /usr/sbin/dpkg-reconfigure tzdata
    ```
@@ -38,18 +36,18 @@ Anything can have a mascot
    ```
    /usr/sbin/dpkg-reconfigure locales
    ```
-6) Run the installer script
+7) Run the installer script
    ```
    curl -s https://raw.githubusercontent.com/FZsolter-WAGO/wms-linux-framework/main/bin/install.sh | bash
    ```
    
    If something went wrong, or the password is lost then execute this line again. It will start over the non-framework related part of the installation (dropping the databases and user, cleaning /var/www)
-7) Continue with WMS's normal self-host install process
-8) Run the post config script
+8) Continue with WMS's normal self-host install process
+9) Run the post config script
    ```
    wms_post_config
    ```
-9) Access the management site at http://<server_ip>.<management_port>/
+10) Access the management site at http://<server_ip>.<management_port>/
 
 ### Tip
 This should be used only once during the initial setup of the system, since the recommended way of installing WAGO Monitoring Solution on Linux is using a fresh new minimized OS install on a dedicated hardware only for this one purpose.
