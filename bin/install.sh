@@ -15,6 +15,35 @@
 #   <support.hu@wago.com>                                           #
 #                                                                   #
 #   Version history:                                                #
+#   1.0.0   -   Initial release                                     #
+#               PHP8.1 + Apache2 + MariaDB                          #
+#               Installing every needed PHP8.1 modules              #
+#               Removing the default /var/www/html site from        #
+#                   Apache2                                         #
+#               Creating a MariaDB 'wattson'@'localhost' user       #
+#                   with a random password for the app              #
+#                                                                   #
+#   1.0.1   -   Day two of working on this script                   #
+#               Now the script only runs if it can find the tar.gz  #
+#                   WattsON self-host installer package. This has   #
+#                   to be provided by the user.                     #
+#                                                                   #
+#   1.0.2   -   Things I have learnt from get.docker.com            #
+#               Warp up the whole script into a function, so the    #
+#                   user is protected if the file is not            #
+#                   downloaded correctly                            #
+#                                                                   #
+#   1.0.3   -   New week, new ideas                                 #
+#               wattson_post_config added to /bin/                  #
+#                                                                   #
+#   1.0.4   -   Cosmetics                                           #
+#               Modified snek to fit into 80 charaters              #
+#                                                                   #
+#   1.0.5   -   18 char random password instead of 12 for MariaDB   #
+#                                                                   #
+#   1.0.6   -   Special characters are no longer allowed            #
+#                   for passwords (base64 -> hex)                   #
+#                                                                   #
 #   2.0.0   -   Software renamed from WattsON Energy                #
 #                   to WAGO Monitoring Solution                     #
 #               Dropped MariaDB, using MySQL                        #
