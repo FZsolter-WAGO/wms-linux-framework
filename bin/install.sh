@@ -47,6 +47,7 @@
 #   2.0.0   -   Software renamed from WattsON Energy                #
 #                   to WAGO Monitoring Solution                     #
 #               Dropped MariaDB, using MySQL from now               #
+#               Enabling ssl mod for Apache2 just in case           #
 #                                                                   #
 #####################################################################
 
@@ -280,7 +281,7 @@ if [ -z "$(grep -n 'ServerName 127.0.0.1' /etc/apache2/apache2.conf 2>/dev/null)
 then
     echo "ServerName 127.0.0.1" >> /etc/apache2/apache2.conf
 fi
-/usr/sbin/a2enmod php8.1 rewrite alias setenvif socache_shmcb &>/dev/null
+/usr/sbin/a2enmod php8.1 rewrite alias setenvif socache_shmcb ssl &>/dev/null
 # The default 80 and 443 ports are used by the default example sites provided by the vendor. Removing them.
 if [ -n "$(ls /etc/apache2/sites-available/ 2>/dev/null)" ]
 then
