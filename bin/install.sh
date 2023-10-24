@@ -196,6 +196,16 @@ then
     echo -e "${YW}[INFO]${NC} Uninstalling MariaDB"
     apt -qq purge -y mariadb-server &>/dev/null
 fi
+if [ -z "$(which mysql 2>/dev/null)" ]
+then
+    echo -e "${YW}[INFO]${NC} Installing MySQL"
+    export DEBIAN_FRONTEND="noninteractive";
+    wget https://dev.mysql.com/get/mysql-apt-config_0.8.26-1_all.deb
+    dpkg -i ./mysql-apt-config_0.8.26-1_all.deb
+    apt update && apt install mysql-server -y
+else
+    echo -e "${YW}[INFO]${NC} MySQL already installed"
+fi
 if [ -z "$(which php8.1 2>/dev/null)" ]
 then
     echo -e "${YW}[INFO]${NC} Installing PHP8.1 and the required extensions"
@@ -206,12 +216,15 @@ fi
 # The PHP extension install line will run every time, since it is a bit harder to check for them one-by-one
 # Copypaste from the installation manual. Many of these are already installed, or does not exist at all.
 apt -qq install -y php8.1-amqp &>/dev/null
+apt -qq install -y php8.1-apc &>/dev/null
 apt -qq install -y php8.1-apcu &>/dev/null
 apt -qq install -y php8.1-bcmath &>/dev/null
 apt -qq install -y php8.1-bz2 &>/dev/null
 apt -qq install -y php8.1-calendar &>/dev/null
+apt -qq install -y php8.1-Core &>/dev/null
 apt -qq install -y php8.1-ctype &>/dev/null
 apt -qq install -y php8.1-curl &>/dev/null
+apt -qq install -y php8.1-date &>/dev/null
 apt -qq install -y php8.1-dom &>/dev/null
 apt -qq install -y php8.1-exif &>/dev/null
 apt -qq install -y php8.1-FFI &>/dev/null
@@ -220,21 +233,34 @@ apt -qq install -y php8.1-filter &>/dev/null
 apt -qq install -y php8.1-ftp &>/dev/null
 apt -qq install -y php8.1-gd &>/dev/null
 apt -qq install -y php8.1-gettext &>/dev/null
+apt -qq install -y php8.1-hash &>/dev/null
 apt -qq install -y php8.1-iconv &>/dev/null
 apt -qq install -y php8.1-imagick &>/dev/null
 apt -qq install -y php8.1-intl &>/dev/null
+apt -qq install -y php8.1-json &>/dev/null
+apt -qq install -y php8.1-libxml &>/dev/null
 apt -qq install -y php8.1-mbstring &>/dev/null
 apt -qq install -y php8.1-memcache &>/dev/null
 apt -qq install -y php8.1-mysqli &>/dev/null
 apt -qq install -y php8.1-mysqlnd &>/dev/null
+apt -qq install -y php8.1-openssl &>/dev/null
+apt -qq install -y php8.1-pcntl &>/dev/null
+apt -qq install -y php8.1-pcre &>/dev/null
 apt -qq install -y php8.1-PDO &>/dev/null
+apt -qq install -y php8.1-pdo_mysql &>/dev/null
+apt -qq install -y php8.1-pdo_sqlite &>/dev/null
 apt -qq install -y php8.1-Phar &>/dev/null
 apt -qq install -y php8.1-posix &>/dev/null
 apt -qq install -y php8.1-readline &>/dev/null
+apt -qq install -y php8.1-Reflection &>/dev/null
+apt -qq install -y php8.1-session &>/dev/null
 apt -qq install -y php8.1-shmop &>/dev/null
 apt -qq install -y php8.1-SimpleXML &>/dev/null
 apt -qq install -y php8.1-sockets &>/dev/null
+apt -qq install -y php8.1-sodium &>/dev/null
+apt -qq install -y php8.1-SPL &>/dev/null
 apt -qq install -y php8.1-sqlite3 &>/dev/null
+apt -qq install -y php8.1-standard &>/dev/null
 apt -qq install -y php8.1-sysvmsg &>/dev/null
 apt -qq install -y php8.1-sysvsem &>/dev/null
 apt -qq install -y php8.1-sysvshm &>/dev/null
@@ -245,6 +271,7 @@ apt -qq install -y php8.1-xmlreader &>/dev/null
 apt -qq install -y php8.1-xmlwriter &>/dev/null
 apt -qq install -y php8.1-xsl &>/dev/null
 apt -qq install -y php8.1-zip &>/dev/null
+apt -qq install -y php8.1-zlib &>/dev/null
 
 # Modifying configuration files, and other settings
 echo -e "${YW}[INFO]${NC} Setting up Apache2"
@@ -270,7 +297,7 @@ echo "" > /etc/apache2/ports.conf
 echo -e "${YW}[INFO]${NC} Setting up MySQL"
 if [ -z "$(which mysql 2>/dev/null)" ]
 then
-    echo -e "${RD}[ERR]${NC} MySQL is not installed!"
+    echo -e "${RD}[ERR]${NC} Could not install MySQL!"
     exit -1
 fi
 mysql -u root -Bse "DROP USER 'wattson'@'localhost';" &>/dev/null
