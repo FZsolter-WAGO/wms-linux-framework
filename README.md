@@ -1,4 +1,4 @@
-﻿# WattsON Energy Linux framework installer
+﻿# WAGO Monitoring Solution Linux framework installer
 
 ## Only Debian 10/11 and Ubuntu 22.04 are supported!
 
@@ -22,9 +22,9 @@ Anything can have a mascot
    ```
    apt update && apt full-upgrade -y && apt install curl -y
    ```
-4) Upload the desired "wattson_x.x.x.x.tar.gz" package
+4) Upload the desired "wms_x.x.x.tar.gz" package
 
-   It is recommended to upload the package to /root/wattson_x.x.x.x.tar.gz using SFTP (with FileZilla for example)
+   It is recommended to upload the package to /root/wms_x.x.x.tar.gz using SFTP (with FileZilla for example)
    
    Otherwise navigate to the file with "cd /path/to/package/" in the terminal
 
@@ -38,16 +38,16 @@ Anything can have a mascot
    ```
 6) Run the installer script
    ```
-   curl -s https://raw.githubusercontent.com/FZsolter-WAGO/wattson-linux-framework/main/bin/install.sh | bash
+   curl -s https://raw.githubusercontent.com/FZsolter-WAGO/wms-linux-framework/main/bin/install.sh | bash
    ```
    
    If something went wrong, or the password is lost then execute this line again. It will start over the non-framework related part of the installation (dropping the databases and user, cleaning /var/www)
-7) Continue with WattsON's normal self-host install process
+7) Continue with WMS's normal self-host install process
 8) Run the post config script
    ```
-   wattson_post_config
+   wms_post_config
    ```
 9) Access the management site at http://<server_ip>.<management_port>/
 
 ### Tip
-This should be used only once during the initial setup of the system, since the recommended way of installing WattsON Energy on Linux is using a fresh new minimized OS install on a dedicated hardware only for this one purpose.
+This should be used only once during the initial setup of the system, since the recommended way of installing WAGO Monitoring Solution on Linux is using a fresh new minimized OS install on a dedicated hardware only for this one purpose.
