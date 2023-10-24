@@ -46,7 +46,7 @@
 #                                                                   #
 #   2.0.0   -   Software renamed from WattsON Energy                #
 #                   to WAGO Monitoring Solution                     #
-#               Dropped MariaDB, using MySQL                        #
+#               Dropped MariaDB, using MySQL from now               #
 #                                                                   #
 #####################################################################
 
@@ -190,12 +190,17 @@ then
 else
     echo -e "${YW}[INFO]${NC} Apache2 already installed"
 fi
-if [ -z "$(which mariadb 2>/dev/null)" ]
+if [ -n "$(which mariadb 2>/dev/null)" ]
 then
-    echo -e "${YW}[INFO]${NC} Installing MariaDB"
-    apt -qq install -y mariadb-server &>/dev/null
+    echo -e "${YW}[INFO]${NC} Uninstalling MariaDB"
+    apt -qq purge -y mariadb-server &>/dev/null
+fi
+if [ -z "$(which mysql 2>/dev/null)" ]
+then
+    echo -e "${YW}[INFO]${NC} Installing MySQL"
+    apt -qq install -y mysql-server &>/dev/null
 else
-    echo -e "${YW}[INFO]${NC} MariaDB already installed"
+    echo -e "${YW}[INFO]${NC} MySQL already installed"
 fi
 if [ -z "$(which php8.1 2>/dev/null)" ]
 then
@@ -205,7 +210,64 @@ else
     echo -e "${YW}[INFO]${NC} PHP8.1 already installed"
 fi
 # The PHP extension install line will run every time, since it is a bit harder to check for them one-by-one
-apt -qq install -y php8.1-amqp php8.1-apcu php8.1-bz2 php8.1-bcmath php8.1-curl php8.1-gd php8.1-imagick php8.1-intl php8.1-mbstring php8.1-memcache php8.1-mysql php8.1-sqlite3 php8.1-SimpleXML php8.1-xdebug php8.1-xml php8.1-zip &>/dev/null
+# Copypaste from the installation manual. Many of these are already installed, or does not exist at all.
+apt -qq install -y php8.1-amqp
+apt -qq install -y php8.1-apc
+apt -qq install -y php8.1-apcu
+apt -qq install -y php8.1-bcmath
+apt -qq install -y php8.1-bz2
+apt -qq install -y php8.1-calendar
+apt -qq install -y php8.1-Core
+apt -qq install -y php8.1-ctype
+apt -qq install -y php8.1-curl
+apt -qq install -y php8.1-date
+apt -qq install -y php8.1-dom
+apt -qq install -y php8.1-exif
+apt -qq install -y php8.1-FFI
+apt -qq install -y php8.1-fileinfo
+apt -qq install -y php8.1-filter
+apt -qq install -y php8.1-ftp
+apt -qq install -y php8.1-gd
+apt -qq install -y php8.1-gettext
+apt -qq install -y php8.1-hash
+apt -qq install -y php8.1-iconv
+apt -qq install -y php8.1-imagick
+apt -qq install -y php8.1-intl
+apt -qq install -y php8.1-json
+apt -qq install -y php8.1-libxml
+apt -qq install -y php8.1-mbstring
+apt -qq install -y php8.1-memcache
+apt -qq install -y php8.1-mysqli
+apt -qq install -y php8.1-mysqlnd
+apt -qq install -y php8.1-openssl
+apt -qq install -y php8.1-pcntl
+apt -qq install -y php8.1-pcre
+apt -qq install -y php8.1-PDO
+apt -qq install -y php8.1-pdo_mysql
+apt -qq install -y php8.1-pdo_sqlite
+apt -qq install -y php8.1-Phar
+apt -qq install -y php8.1-posix
+apt -qq install -y php8.1-readline
+apt -qq install -y php8.1-Reflection
+apt -qq install -y php8.1-session
+apt -qq install -y php8.1-shmop
+apt -qq install -y php8.1-SimpleXML
+apt -qq install -y php8.1-sockets
+apt -qq install -y php8.1-sodium
+apt -qq install -y php8.1-SPL
+apt -qq install -y php8.1-sqlite3
+apt -qq install -y php8.1-standard
+apt -qq install -y php8.1-sysvmsg
+apt -qq install -y php8.1-sysvsem
+apt -qq install -y php8.1-sysvshm
+apt -qq install -y php8.1-tokenizer
+apt -qq install -y php8.1-xdebug
+apt -qq install -y php8.1-xml
+apt -qq install -y php8.1-xmlreader
+apt -qq install -y php8.1-xmlwriter
+apt -qq install -y php8.1-xsl
+apt -qq install -y php8.1-zip
+apt -qq install -y php8.1-zlib
 
 # Modifying configuration files, and other settings
 echo -e "${YW}[INFO]${NC} Setting up Apache2"
@@ -228,10 +290,10 @@ rm /etc/apache2/sites-available/* &>/dev/null
 echo "" > /etc/apache2/ports.conf
 
 # Let's drop the user if it exists, and recreate it with a random password
-echo -e "${YW}[INFO]${NC} Setting up MariaDB"
+echo -e "${YW}[INFO]${NC} Setting up MySQL"
 if [ -z "$(which mysql 2>/dev/null)" ]
 then
-    echo -e "${RD}[ERR]${NC} Could not install MariaDB!"
+    echo -e "${RD}[ERR]${NC} Could not install MySQL!"
     exit -1
 fi
 mysql -u root -Bse "DROP USER 'wattson'@'localhost';" &>/dev/null
