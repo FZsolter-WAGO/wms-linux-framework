@@ -50,7 +50,7 @@ Anything can have a mascot
 ### Tip 1
 This should be used only once during the initial setup of the system, since the recommended way of installing WAGO Monitoring Solution on Linux is using a fresh new minimized OS install on a dedicated hardware only for this one purpose.
 ### Tip 2
-You may also want to use the WMS server as an NTP server for the datacollector PLCs. You could install the package NTP. Edit the file /etc/ntp.conf on demand.
+You may also want to use the WMS server as an NTP server for the data collector PLCs. You could install the package NTP. Edit the file /etc/ntp.conf on demand.
 ```
 apt install ntp
 ```
