@@ -217,63 +217,7 @@ else
 fi
 # The PHP extension install line will run every time, since it is a bit harder to check for them one-by-one
 # Copypaste from the installation manual. Many of these are already installed, or does not exist at all.
-apt -qq install -y php8.1-amqp &>/dev/null
-apt -qq install -y php8.1-apc &>/dev/null
-apt -qq install -y php8.1-apcu &>/dev/null
-apt -qq install -y php8.1-bcmath &>/dev/null
-apt -qq install -y php8.1-bz2 &>/dev/null
-apt -qq install -y php8.1-calendar &>/dev/null
-apt -qq install -y php8.1-Core &>/dev/null
-apt -qq install -y php8.1-ctype &>/dev/null
-apt -qq install -y php8.1-curl &>/dev/null
-apt -qq install -y php8.1-date &>/dev/null
-apt -qq install -y php8.1-dom &>/dev/null
-apt -qq install -y php8.1-exif &>/dev/null
-apt -qq install -y php8.1-FFI &>/dev/null
-apt -qq install -y php8.1-fileinfo &>/dev/null
-apt -qq install -y php8.1-filter &>/dev/null
-apt -qq install -y php8.1-ftp &>/dev/null
-apt -qq install -y php8.1-gd &>/dev/null
-apt -qq install -y php8.1-gettext &>/dev/null
-apt -qq install -y php8.1-hash &>/dev/null
-apt -qq install -y php8.1-iconv &>/dev/null
-apt -qq install -y php8.1-imagick &>/dev/null
-apt -qq install -y php8.1-intl &>/dev/null
-apt -qq install -y php8.1-json &>/dev/null
-apt -qq install -y php8.1-libxml &>/dev/null
-apt -qq install -y php8.1-mbstring &>/dev/null
-apt -qq install -y php8.1-memcache &>/dev/null
-apt -qq install -y php8.1-mysqli &>/dev/null
-apt -qq install -y php8.1-mysqlnd &>/dev/null
-apt -qq install -y php8.1-openssl &>/dev/null
-apt -qq install -y php8.1-pcntl &>/dev/null
-apt -qq install -y php8.1-pcre &>/dev/null
-apt -qq install -y php8.1-PDO &>/dev/null
-apt -qq install -y php8.1-pdo_mysql &>/dev/null
-apt -qq install -y php8.1-pdo_sqlite &>/dev/null
-apt -qq install -y php8.1-Phar &>/dev/null
-apt -qq install -y php8.1-posix &>/dev/null
-apt -qq install -y php8.1-readline &>/dev/null
-apt -qq install -y php8.1-Reflection &>/dev/null
-apt -qq install -y php8.1-session &>/dev/null
-apt -qq install -y php8.1-shmop &>/dev/null
-apt -qq install -y php8.1-SimpleXML &>/dev/null
-apt -qq install -y php8.1-sockets &>/dev/null
-apt -qq install -y php8.1-sodium &>/dev/null
-apt -qq install -y php8.1-SPL &>/dev/null
-apt -qq install -y php8.1-sqlite3 &>/dev/null
-apt -qq install -y php8.1-standard &>/dev/null
-apt -qq install -y php8.1-sysvmsg &>/dev/null
-apt -qq install -y php8.1-sysvsem &>/dev/null
-apt -qq install -y php8.1-sysvshm &>/dev/null
-apt -qq install -y php8.1-tokenizer &>/dev/null
-apt -qq install -y php8.1-xdebug &>/dev/null
-apt -qq install -y php8.1-xml &>/dev/null
-apt -qq install -y php8.1-xmlreader &>/dev/null
-apt -qq install -y php8.1-xmlwriter &>/dev/null
-apt -qq install -y php8.1-xsl &>/dev/null
-apt -qq install -y php8.1-zip &>/dev/null
-apt -qq install -y php8.1-zlib &>/dev/null
+apt -qq install -y php8.1-amqp php8.1-apcu php8.1-bcmath php8.1-bz2 php8.1-calendar php8.1-ctype php8.1-curl php8.1-dom php8.1-exif php8.1-FFI php8.1-fileinfo php8.1-ftp php8.1-gd php8.1-gettext php8.1-iconv php8.1-imagick php8.1-intl php8.1-mbstring php8.1-memcache php8.1-mysqli php8.1-mysqlnd php8.1-PDO php8.1-Phar php8.1-posix php8.1-readline php8.1-shmop php8.1-SimpleXML php8.1-sockets php8.1-sqlite3 php8.1-sysvmsg php8.1-sysvsem php8.1-sysvshm php8.1-tokenizer php8.1-xdebug php8.1-xml php8.1-xmlreader php8.1-xmlwriter php8.1-xsl php8.1-zip &>/dev/null
 
 # Modifying configuration files, and other settings
 echo -e "${YW}[INFO]${NC} Setting up Apache2"
