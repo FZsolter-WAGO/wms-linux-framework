@@ -302,8 +302,12 @@ then
     echo -e "${RD}[ERR]${NC} Could not install MySQL!"
     exit -1
 fi
-mysql -u root -Bse "DROP USER 'wattson'@'localhost';" &>/dev/null
-mysql -u root -Bse "DROP USER 'wms'@'localhost';" &>/dev/null
+mysql -u root -Bse "DELETE FROM mysql.db WHERE Db='test' OR Db='test_%';" &>/dev/null
+mysql -u root -Bse "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');" &>/dev/null
+mysql -u root -Bse "DELETE FROM mysql.user WHERE User='';" &>/dev/null
+mysql -u root -Bse "DELETE FROM mysql.user WHERE User='wattson';" &>/dev/null
+mysql -u root -Bse "DELETE FROM mysql.user WHERE User='wms';" &>/dev/null
+mysql -u root -Bse "FLUSH PRIVILEGES;" &>/dev/null
 mysql -u root -Bse "DROP DATABASE wattson_system;" &>/dev/null
 mysql -u root -Bse "DROP DATABASE wattson_management;" &>/dev/null
 MYSQL_PASS="$(openssl rand -hex 18)"
