@@ -1,12 +1,12 @@
 #!/bin/bash
 #####################################################################
 #                                                                   #
-#   WattsON Linux framework installer for Debian 11 (bullseye),     #
+#   WMS Linux framework installer for Debian 11 (bullseye),         #
 #   10 (buster) or Ubuntu 22.04 (jammy)                             #
 #                                                                   #
-#   This script should prepare an enviroment for WattsON Energy     #
-#   by installing all the mandatory framework softwares, and        #
-#   also it should set them up as recommended by the generic        #
+#   This script should prepare an enviroment for WAGO Monitoring    #
+#   Solution by installing all the mandatory framework softwares,   #
+#   and also it should set them up as recommended by the generic    #
 #   installation guide.                                             #
 #                                                                   #
 #   Contact:                                                        #
@@ -15,39 +15,14 @@
 #   <support.hu@wago.com>                                           #
 #                                                                   #
 #   Version history:                                                #
-#   1.0.0   -   Initial release                                     #
-#               PHP8.1 + Apache2 + MariaDB                          #
-#               Installing every needed PHP8.1 modules              #
-#               Removing the default /var/www/html site from        #
-#                   Apache2                                         #
-#               Creating a MariaDB 'wattson'@'localhost' user       #
-#                   with a random password for the app              #
-#                                                                   #
-#   1.0.1   -   Day two of working on this script                   #
-#               Now the script only runs if it can find the tar.gz  #
-#                   WattsON self-host installer package. This has   #
-#                   to be provided by the user.                     #
-#                                                                   #
-#   1.0.2   -   Things I have learnt from get.docker.com            #
-#               Warp up the whole script into a function, so the    #
-#                   user is protected if the file is not            #
-#                   downloaded correctly                            #
-#                                                                   #
-#   1.0.3   -   New week, new ideas                                 #
-#               wattson_post_config added to /bin/                  #
-#                                                                   #
-#   1.0.4   -   Cosmetics                                           #
-#               Modified snek to fit into 80 charaters              #
-#                                                                   #
-#   1.0.5   -   18 char random password instead of 12 for MariaDB   #
-#                                                                   #
-#   1.0.6   -   Special characters are no longer allowed            #
-#                   for passwords (base64 -> hex)                   #
+#   2.0.0   -   Software renamed from WattsON Energy                #
+#                   to WAGO Monitoring Solution                     #
+#               Dropped MariaDB, using MySQL                        #
 #                                                                   #
 #####################################################################
 
 # Wrapper function added in 1.0.2
-function wattson_framework_installer {
+function wms_framework_installer {
 
 # Global color variables
 GN='\033[0;32m'
@@ -56,10 +31,10 @@ RD='\033[0;31m'
 NC='\033[0m'
 
 # Global constants
-readonly SUPPORTED_WATTSON_VERSIONS=("3.1.4.25" "3.1.4.27")
+readonly SUPPORTED_WMS_VERSIONS=("3.4.0" "3.4.1")
 
 echo -e ""
-echo -e "${GN}WattsON Linux framework and software installer for Debian 11 (bullseye), 10 (buster) or Ubuntu 22.04 (jammy)${NC}"
+echo -e "${GN}WMS Linux framework and software installer for Debian 11 (bullseye), 10 (buster) or Ubuntu 22.04 (jammy)${NC}"
 # apt will be used and many other things
 # Only root can run the script
 if [ "$EUID" -ne 0 ]
@@ -69,12 +44,12 @@ then
 fi
 if test -f /var/www/wattson/.env.local
 then
-    echo -e "${RD}[ERR]${NC} WattsON already installed! Create backups manualy, then remove /var/www/wattson folder to use this script"
+    echo -e "${RD}[ERR]${NC} WMS already installed! Create backups manualy, then remove /var/www/wattson folder to use this script"
     exit -1
 fi
-# The script only works if there is a wattson_X.tar.gz package provided by the user in the current directory
-echo -e "${YW}[INFO]${NC} Looking for ./wattson_X.tar.gz"
-FOUND_PACKAGE=$(ls ./ 2>/dev/null | grep wattson_ | grep .tar.gz | tail -1)
+# The script only works if there is a wms_X.tar.gz package provided by the user in the current directory
+echo -e "${YW}[INFO]${NC} Looking for ./wms_X.tar.gz"
+FOUND_PACKAGE=$(ls ./ 2>/dev/null | grep wms_ | grep .tar.gz | tail -1)
 if [ -z "$FOUND_PACKAGE" ]
 then
     echo -e "${RD}[ERR]${NC} Can not find package"
@@ -83,9 +58,9 @@ fi
 FOUND_PACKAGE=./"$FOUND_PACKAGE"
 match=false
 # Checking for supported versions in the filename
-for version in "_${SUPPORTED_WATTSON_VERSIONS[@]/%/.}"; do
+for version in "_${SUPPORTED_WMS_VERSIONS[@]/%/.}"; do
     if [[ $FOUND_PACKAGE == *"$version"* ]]; then
-        echo -e "${YW}[INFO]${NC} Found wattson${version}tar.gz"
+        echo -e "${YW}[INFO]${NC} Found wms${version}tar.gz"
         match=true
         break
     fi
@@ -97,7 +72,7 @@ then
 fi
 
 echo -e "${YW}Are you sure about running this script? It will install several packages via apt.${NC}"
-echo -e "${YW}!!! It will also purge any existing WattsON installation (dropping databases, removing /var/www/wattson) !!!${NC}"
+echo -e "${YW}!!! It will also purge any existing WMS installation (dropping databases, removing /var/www/wattson) !!!${NC}"
 echo -e "${YW}Terminate with Ctrl+C to cancel, or wait 20 seconds to continue${NC}"
 # The only user input we need, a consent
 sleep 10
@@ -231,14 +206,15 @@ then
     exit -1
 fi
 mysql -u root -Bse "DROP USER 'wattson'@'localhost';" &>/dev/null
+mysql -u root -Bse "DROP USER 'wms'@'localhost';" &>/dev/null
 mysql -u root -Bse "DROP DATABASE wattson_system;" &>/dev/null
 mysql -u root -Bse "DROP DATABASE wattson_management;" &>/dev/null
 MYSQL_PASS="$(openssl rand -hex 18)"
-mysql -u root -Bse "CREATE USER 'wattson'@'localhost' IDENTIFIED BY '$MYSQL_PASS';GRANT ALL ON *.* TO 'wattson'@'localhost';" &>/dev/null
+mysql -u root -Bse "CREATE USER 'wms'@'localhost' IDENTIFIED BY '$MYSQL_PASS';GRANT ALL ON *.* TO 'wms'@'localhost';" &>/dev/null
 
 # The php.ini files have to be modified, and we must provide the SourceGuardian loader
 echo -e "${YW}[INFO]${NC} Setting up PHP8.1"
-curl -sSLo /usr/lib/php/20210902/ixed.8.1.lin https://raw.githubusercontent.com/FZsolter-WAGO/wattson-linux-framework/main/src/ixed.8.1.lin &>/dev/null
+curl -sSLo /usr/lib/php/20210902/ixed.8.1.lin https://raw.githubusercontent.com/FZsolter-WAGO/wms-linux-framework/main/src/ixed.8.1.lin &>/dev/null
 if [ -z "$(grep -n 'extension=ixed.8.1.lin' /etc/php/8.1/apache2/php.ini 2>/dev/null)" ]
 then
     echo "extension=ixed.8.1.lin" >> /etc/php/8.1/apache2/php.ini
@@ -254,10 +230,10 @@ then
 fi
 sed -i 's/.*memory_limit.*/memory_limit = -1/' /etc/php/8.1/cli/php.ini &>/dev/null
 
-# Everything should be fine, we can continue with the WattsON self-host installation
-echo -e "${YW}[INFO]${NC} New database user created: 'wattson'@'localhost' IDENTIFIED BY '${YW}$MYSQL_PASS${NC}'"
+# Everything should be fine, we can continue with the WMS self-host installation
+echo -e "${YW}[INFO]${NC} New database user created: 'wms'@'localhost' IDENTIFIED BY '${YW}$MYSQL_PASS${NC}'"
 
-# Framework install completed, continue with WattsON
+# Framework install completed, continue with WMS
 echo -e "${YW}[INFO]${NC} Unpacking package to /var/www/wattson"
 if [ -z "$(which tar 2>/dev/null)" ]
 then
@@ -268,11 +244,11 @@ fi
 rm /var/www/wattson -Rf &>/dev/null
 tar -zxf $FOUND_PACKAGE -C /var/www/ &>/dev/null
 
-echo -e "${YW}[INFO]${NC} Downloading the newest version of wattson_post_config to /bin/"
-curl -sSLo /bin/wattson_post_config https://raw.githubusercontent.com/FZsolter-WAGO/wattson-linux-framework/main/src/wattson_post_config &>/dev/null
-chmod 700 /bin/wattson_post_config
+echo -e "${YW}[INFO]${NC} Downloading the newest version of wms_post_config to /bin/"
+curl -sSLo /bin/wms_post_config https://raw.githubusercontent.com/FZsolter-WAGO/wms-linux-framework/main/src/wms_post_config &>/dev/null
+chmod 700 /bin/wms_post_config
 
-# Let's start with the documented WattsON installation
+# Let's start with the documented WMS installation
 cd /var/www/wattson
 echo -e "${YW}[INFO]${NC} You have to run 'php bin/console app:installer:self-hosted-install --env=dev' inside /var/www/wattson, you are on your own now..."
 echo -e "${YW}[INFO]${NC} This installer terminates here, continue the process manually"
@@ -282,4 +258,4 @@ exit 0
 }
 
 # Wrapper function added in 1.0.2
-wattson_framework_installer
+wms_framework_installer
