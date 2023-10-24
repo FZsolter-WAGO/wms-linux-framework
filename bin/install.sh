@@ -54,6 +54,7 @@
 # Wrapper function added in 1.0.2
 function wms_framework_installer {
 
+export DEBIAN_FRONTEND="noninteractive";
 # Global color variables
 GN='\033[0;32m'
 YW='\033[0;33m'
@@ -199,9 +200,9 @@ fi
 if [ -z "$(which mysql 2>/dev/null)" ]
 then
     echo -e "${YW}[INFO]${NC} Installing MySQL"
-    export DEBIAN_FRONTEND="noninteractive";
     wget https://dev.mysql.com/get/mysql-apt-config_0.8.26-1_all.deb
     dpkg -i ./mysql-apt-config_0.8.26-1_all.deb
+    rm ./mysql-apt-config_0.8.26-1_all.deb
     apt update && apt install mysql-server -y
 else
     echo -e "${YW}[INFO]${NC} MySQL already installed"
