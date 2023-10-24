@@ -31,6 +31,5 @@ else
 	chmod -R 777 /var/www/wattson/var
 	chmod -R 777 /var/www/wattson/storage
 	chmod +x /var/www/wattson/mercure/mercure
-	chmod +x /var/www/wattson/bin/commandScheduler.sh
 	echo -e ${YW}[INFO]${NC} Done! Do not forget to add the Mercure startup scripts to crontab!$'\n'
 fi
