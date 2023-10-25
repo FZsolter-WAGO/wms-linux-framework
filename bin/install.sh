@@ -245,6 +245,7 @@ then
 fi
 rm /etc/apache2/sites-available/* &>/dev/null
 echo "" > /etc/apache2/ports.conf
+rm /var/www/html -rf
 
 # Let's drop the user if it exists, and recreate it with a random password
 echo -e "${YW}[INFO]${NC} Setting up MySQL"
