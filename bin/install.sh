@@ -80,6 +80,14 @@ then
 fi
 # The script only works if there is a wms_X.tar.gz package provided by the user in the current directory
 echo -e "${YW}[INFO]${NC} Looking for ./wms_X.tar.gz"
+# If the script finds a wattson_X.tar.gz, then it runs the new https://github.com/FZsolter-WAGO/wattson-linux-framework/blob/main/bin/install.sh script
+FOUND_PACKAGE=$(ls ./ 2>/dev/null | grep wattson_ | grep .tar.gz | tail -1)
+if [ -n "$FOUND_PACKAGE" ]
+then
+    echo -e "${YW}[INFO]${NC} The provided package is for WattsON. Redirecting installer script to https://github.com/FZsolter-WAGO/wattson-linux-framework/blob/main/bin/install.sh"
+    curl -s https://github.com/FZsolter-WAGO/wattson-linux-framework/blob/main/bin/install.sh | bash
+    exit 0
+fi
 FOUND_PACKAGE=$(ls ./ 2>/dev/null | grep wms_ | grep .tar.gz | tail -1)
 if [ -z "$FOUND_PACKAGE" ]
 then
