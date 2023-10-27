@@ -49,6 +49,9 @@
 #               Dropped MariaDB, using MySQL from now               #
 #               Enabling ssl mod for Apache2 just in case           #
 #                                                                   #
+#   2.0.1   -   wms_post_config now generates a fresh password      #
+#                   for 'management@wattson.local'                  #
+#                                                                   #
 #####################################################################
 
 # Wrapper function added in 1.0.2
