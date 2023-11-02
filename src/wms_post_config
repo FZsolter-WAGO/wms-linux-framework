@@ -16,6 +16,17 @@ else
         cd /etc/apache2/sites-available
         echo -e ${YW}[INFO]${NC} Enabling site configuration
         /usr/sbin/a2ensite wms.conf &>/dev/null
+        echo -e ${YW}[INFO]${NC} Clearing cache
+        rm /var/www/wms/var/cache/* -rf &>/dev/null
+        cd /var/www/wms/
+        php bin/console cache:clear --env=dev &>/dev/null
+        echo -e ${YW}[INFO]${NC} Change owner of the wms folder to www-data
+        chown www-data:www-data -R /var/www/wms &>/dev/null
+        echo -e ${YW}[INFO]${NC} Change permissions of the wms folder
+        chmod -R 775 /var/www/wms &>/dev/null
+        chmod -R 777 /var/www/wms/var &>/dev/null
+        chmod -R 777 /var/www/wms/storage &>/dev/null
+        chmod +x /var/www/wms/mercure/mercure &>/dev/null
         echo -e ${YW}[INFO]${NC} Restarting Apache
         if [ -n "$(which service 2>/dev/null)" ]
         then
@@ -25,13 +36,6 @@ else
                 systemctl stop apache2 &>/dev/null
                 systemctl start apache2 &>/dev/null
         fi
-        echo -e ${YW}[INFO]${NC} Change owner of the wms folder to www-data
-        chown www-data:www-data -R /var/www/wms &>/dev/null
-        echo -e ${YW}[INFO]${NC} Change permissions of the wms folder
-        chmod -R 775 /var/www/wms &>/dev/null
-        chmod -R 777 /var/www/wms/var &>/dev/null
-        chmod -R 777 /var/www/wms/storage &>/dev/null
-        chmod +x /var/www/wms/mercure/mercure &>/dev/null
         echo -e ${YW}[INFO]${NC} Changing the password of the default management user
         mysql -u root -e "USE wms_management; UPDATE users SET email = 'management@wms.local' WHERE email = 'management@wattson.local';" &>/dev/null
         mysql -u root -e "USE wms_management; UPDATE users SET last_name = 'WMS' WHERE email = 'management@wms.local';" &>/dev/null
