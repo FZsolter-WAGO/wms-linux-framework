@@ -34,6 +34,7 @@ else
         chmod +x /var/www/wms/mercure/mercure &>/dev/null
         echo -e ${YW}[INFO]${NC} Changing the password of the default management user
         mysql -u root -e "USE wms_management; UPDATE users SET email = 'management@wms.local' WHERE email = 'management@wattson.local';" &>/dev/null
+        mysql -u root -e "USE wms_management; UPDATE users SET last_name = 'WMS' WHERE email = 'management@wms.local';" &>/dev/null
         new_pass="$(openssl rand -hex 8)"
         bcrypt_hash="$(php -r "echo password_hash('$new_pass', PASSWORD_BCRYPT, ['cost' => 13]);")"
         mysql -u root -e "USE wms_management; UPDATE users SET password = '$bcrypt_hash' WHERE email = 'management@wms.local';" &>/dev/null
