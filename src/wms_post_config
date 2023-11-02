@@ -6,13 +6,13 @@ YW='\033[0;33m'
 RD='\033[0;31m'
 NC='\033[0m'
 
-if [ ! -e /var/www/wattson/self_hosted/vhost/wms.conf ]; then
-        echo -e $'\n'${RD}[ERR]${NC} First install the software by executing ${YW}$'\"'php bin/console app:installer:self-hosted-install --env=dev$'\"'${NC} inside the $'\"'/var/www/wattson/$'\"' directory!$'\n';
+if [ ! -e /var/www/wms/self_hosted/vhost/wms.conf ]; then
+        echo -e $'\n'${RD}[ERR]${NC} First install the software by executing $'\"'${YW}php bin/console app:installer:self-hosted-install --env=dev${NC}$'\"' inside the $'\"'/var/www/wms/$'\"' directory!$'\n';
         exit -1
 else
         echo -e $'\n'${YW}[INFO]${NC} WMS application is already installed;
         rm /etc/apache2/sites-available/wms.conf -f
-        ln /var/www/wattson/self_hosted/vhost/wms.conf /etc/apache2/sites-available/wms.conf -s
+        ln /var/www/wms/self_hosted/vhost/wms.conf /etc/apache2/sites-available/wms.conf -s
         cd /etc/apache2/sites-available
         echo -e ${YW}[INFO]${NC} $(/usr/sbin/a2ensite wms.conf &>/dev/null)
         echo -e ${YW}[INFO]${NC} Restarting Apache
@@ -24,17 +24,17 @@ else
                 systemctl stop apache2
                 systemctl start apache2
         fi
-        echo -e ${YW}[INFO]${NC} Change owner of the wattson folder to www-data
-        chown www-data:www-data -R /var/www/wattson
-        echo -e ${YW}[INFO]${NC} Change permissions of the wattson folder
-        chmod -R 775 /var/www/wattson
-        chmod -R 777 /var/www/wattson/var
-        chmod -R 777 /var/www/wattson/storage
-        chmod +x /var/www/wattson/mercure/mercure
+        echo -e ${YW}[INFO]${NC} Change owner of the wms folder to www-data
+        chown www-data:www-data -R /var/www/wms
+        echo -e ${YW}[INFO]${NC} Change permissions of the wms folder
+        chmod -R 775 /var/www/wms
+        chmod -R 777 /var/www/wms/var
+        chmod -R 777 /var/www/wms/storage
+        chmod +x /var/www/wms/mercure/mercure
         echo -e ${YW}[INFO]${NC} Changing the password of the default management user
         new_pass="$(openssl rand -hex 8)"
         bcrypt_hash="$(php -r "echo password_hash('$new_pass', PASSWORD_BCRYPT, ['cost' => 13]);")"
-        mysql -u root -e "USE wattson_management; UPDATE users SET password = '$bcrypt_hash' WHERE email = 'management@wattson.local';"
+        mysql -u root -e "USE wms_management; UPDATE users SET password = '$bcrypt_hash' WHERE email = 'management@wattson.local';"
         echo -e "${YW}[INFO]${NC} The password for the default management user '${YW}management@wattson.local${NC}' has been set to '${YW}${new_pass}${NC}'"
         echo -e ${YW}[INFO]${NC} Done! Do not forget to add the Mercure startup scripts to crontab!$'\n'
 fi
