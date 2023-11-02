@@ -52,6 +52,8 @@
 #   2.0.1   -   wms_post_config now generates a fresh password      #
 #                   for 'management@wattson.local'                  #
 #                                                                   #
+#   2.0.2   -   More things renamed to WMS                          #
+#                                                                   #
 #####################################################################
 
 # Wrapper function added in 1.0.2
@@ -65,7 +67,7 @@ RD='\033[0;31m'
 NC='\033[0m'
 
 # Global constants
-readonly SUPPORTED_WMS_VERSIONS=("3.4.3" "3.4.4")
+readonly SUPPORTED_WMS_VERSIONS=("3.4.4")
 
 echo -e ""
 echo -e "${GN}WMS Linux framework and software installer for Debian 11 (bullseye), 10 (buster) or Ubuntu 22.04 (jammy)${NC}"
@@ -78,7 +80,12 @@ then
 fi
 if test -f /var/www/wattson/.env.local
 then
-    echo -e "${RD}[ERR]${NC} WMS already installed! Create backups manualy, then remove /var/www/wattson folder to use this script"
+    echo -e "${RD}[ERR]${NC} Older WattsON instance already installed! Create backups manualy, then remove /var/www/wattson folder to use this script"
+    exit -1
+fi
+if test -f /var/www/wms/.env.local
+then
+    echo -e "${RD}[ERR]${NC} WMS already installed! Create backups manualy, then remove /var/www/wms folder to use this script"
     exit -1
 fi
 # The script only works if there is a wms_X.tar.gz package provided by the user in the current directory
@@ -114,7 +121,7 @@ then
 fi
 
 echo -e "${YW}Are you sure about running this script? It will install several packages via apt.${NC}"
-echo -e "${YW}!!! It will also purge any existing WMS installation (dropping databases, removing /var/www/wattson) !!!${NC}"
+echo -e "${YW}!!! It will also purge any existing WMS installation (dropping databases, removing /var/www/wms and /var/www/wattson) !!!${NC}"
 echo -e "${YW}Terminate with Ctrl+C to cancel, or wait 20 seconds to continue${NC}"
 # The only user input we need, a consent
 sleep 10
@@ -265,6 +272,8 @@ mysql -u root -Bse "DELETE FROM mysql.user WHERE User='wms';" &>/dev/null
 mysql -u root -Bse "FLUSH PRIVILEGES;" &>/dev/null
 mysql -u root -Bse "DROP DATABASE wattson_system;" &>/dev/null
 mysql -u root -Bse "DROP DATABASE wattson_management;" &>/dev/null
+mysql -u root -Bse "DROP DATABASE wms_system;" &>/dev/null
+mysql -u root -Bse "DROP DATABASE wms_management;" &>/dev/null
 MYSQL_PASS="$(openssl rand -hex 18)"
 mysql -u root -Bse "CREATE USER 'wms'@'localhost' IDENTIFIED BY '$MYSQL_PASS';GRANT ALL ON *.* TO 'wms'@'localhost';" &>/dev/null
 
@@ -290,7 +299,7 @@ sed -i 's/.*memory_limit.*/memory_limit = -1/' /etc/php/8.1/cli/php.ini &>/dev/n
 echo -e "${YW}[INFO]${NC} New database user created: 'wms'@'localhost' IDENTIFIED BY '${YW}$MYSQL_PASS${NC}'"
 
 # Framework install completed, continue with WMS
-echo -e "${YW}[INFO]${NC} Unpacking package to /var/www/wattson"
+echo -e "${YW}[INFO]${NC} Unpacking package to /var/www/wms"
 if [ -z "$(which tar 2>/dev/null)" ]
 then
     echo -e "${YW}[INFO]${NC} Installing tar and gzip"
@@ -298,15 +307,17 @@ then
     exit -1
 fi
 rm /var/www/wattson -Rf &>/dev/null
+rm /var/www/wms -Rf &>/dev/null
 tar -zxf $FOUND_PACKAGE -C /var/www/ &>/dev/null
+mv /var/www/wattson /var/www/wms &>/dev/null
 
 echo -e "${YW}[INFO]${NC} Downloading the newest version of wms_post_config to /bin/"
 curl -sSLo /bin/wms_post_config https://raw.githubusercontent.com/FZsolter-WAGO/wms-linux-framework/main/src/wms_post_config &>/dev/null
 chmod 700 /bin/wms_post_config
 
 # Let's start with the documented WMS installation
-cd /var/www/wattson
-echo -e "${YW}[INFO]${NC} You have to run '${YW}php bin/console app:installer:self-hosted-install --env=dev${NC}' inside /var/www/wattson, you are on your own now..."
+cd /var/www/wms
+echo -e "${YW}[INFO]${NC} You have to run '${YW}php bin/console app:installer:self-hosted-install --env=dev${NC}' inside /var/www/wms, you are on your own now..."
 echo -e "${YW}[INFO]${NC} This installer terminates here, continue the process manually"
 echo -e ""
 exit 0
