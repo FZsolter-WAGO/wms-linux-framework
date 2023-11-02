@@ -6,15 +6,15 @@ YW='\033[0;33m'
 RD='\033[0;31m'
 NC='\033[0m'
 
-if [ ! -e /var/www/wattson/self_hosted/vhost/wattson.conf ]; then
+if [ ! -e /var/www/wattson/self_hosted/vhost/wms.conf ]; then
         echo -e $'\n'${RD}[ERR]${NC} First install the software by executing ${YW}$'\"'php bin/console app:installer:self-hosted-install --env=dev$'\"'${NC} inside the $'\"'/var/www/wattson/$'\"' directory!$'\n';
         exit -1
 else
         echo -e $'\n'${YW}[INFO]${NC} WMS application is already installed;
-        rm /etc/apache2/sites-available/wattson.conf -f
-        ln /var/www/wattson/self_hosted/vhost/wattson.conf /etc/apache2/sites-available/wattson.conf -s
+        rm /etc/apache2/sites-available/wms.conf -f
+        ln /var/www/wattson/self_hosted/vhost/wms.conf /etc/apache2/sites-available/wms.conf -s
         cd /etc/apache2/sites-available
-        echo -e ${YW}[INFO]${NC} $(/usr/sbin/a2ensite wattson.conf &>/dev/null)
+        echo -e ${YW}[INFO]${NC} $(/usr/sbin/a2ensite wms.conf &>/dev/null)
         echo -e ${YW}[INFO]${NC} Restarting Apache
         if [ -n "$(which service 2>/dev/null)" ]
         then
