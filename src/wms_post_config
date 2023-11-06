@@ -43,9 +43,11 @@ else
                         bcrypt_hash="$(php -r "echo password_hash('$new_pass', PASSWORD_BCRYPT, ['cost' => 13]);")"
                         mysql -u root -e "USE wms_management; UPDATE users SET password = '$bcrypt_hash' WHERE email = 'management@wms.local';" &>/dev/null
                         echo -e "${YW}[INFO]${NC} The password for the default management user '${YW}management@wms.local${NC}' has been set to '${YW}${new_pass}${NC}'"
+                        exit
                         ;;
                 No )
                         echo -e "${YW}[INFO]${NC} The password for the default management user '${YW}management@wms.local${NC}' is unchanged"
+                        exit
                         ;;
         esac
         done
