@@ -11,6 +11,13 @@ if [ ! -e /var/www/wms/self_hosted/vhost/wms.conf ]; then
         exit -1
 else
         echo -e $'\n'${YW}[INFO]${NC} WMS application is already installed;
+        echo -e ${YW}[INFO]${NC} Stopping Apache
+        if [ -n "$(which service 2>/dev/null)" ]
+        then
+                service apache2 stop &>/dev/null
+        else
+                systemctl stop apache2 &>/dev/null
+        fi
         rm /etc/apache2/sites-available/wms.conf -f &>/dev/null
         ln /var/www/wms/self_hosted/vhost/wms.conf /etc/apache2/sites-available/wms.conf -s &>/dev/null
         cd /etc/apache2/sites-available
@@ -18,30 +25,26 @@ else
         /usr/sbin/a2ensite wms.conf &>/dev/null
         echo -e ${YW}[INFO]${NC} Clearing cache
         rm /var/www/wms/var/cache/* -rf &>/dev/null
-        cd /var/www/wms/
-        php bin/console cache:clear --env=dev &>/dev/null
         echo -e ${YW}[INFO]${NC} Change owner of the wms folder to www-data
-        chown www-data:www-data -R /var/www/wms &>/dev/null
+        chown root:www-data -R /var/www &>/dev/null
         echo -e ${YW}[INFO]${NC} Change permissions of the wms folder
-        chmod -R 775 /var/www/wms &>/dev/null
+        chmod -R 775 /var/www &>/dev/null
         chmod -R 777 /var/www/wms/var &>/dev/null
         chmod -R 777 /var/www/wms/storage &>/dev/null
         chmod +x /var/www/wms/mercure/mercure &>/dev/null
-        echo -e ${YW}[INFO]${NC} Restarting Apache
-        if [ -n "$(which service 2>/dev/null)" ]
-        then
-                service apache2 stop &>/dev/null
-                service apache2 start &>/dev/null
-        else
-                systemctl stop apache2 &>/dev/null
-                systemctl start apache2 &>/dev/null
-        fi
         echo -e ${YW}[INFO]${NC} Changing the password of the default management user
         mysql -u root -e "USE wms_management; UPDATE users SET email = 'management@wms.local' WHERE email = 'management@wattson.local';" &>/dev/null
         mysql -u root -e "USE wms_management; UPDATE users SET last_name = 'WMS' WHERE email = 'management@wms.local';" &>/dev/null
         new_pass="$(openssl rand -hex 8)"
         bcrypt_hash="$(php -r "echo password_hash('$new_pass', PASSWORD_BCRYPT, ['cost' => 13]);")"
         mysql -u root -e "USE wms_management; UPDATE users SET password = '$bcrypt_hash' WHERE email = 'management@wms.local';" &>/dev/null
+        echo -e ${YW}[INFO]${NC} Starting Apache
+        if [ -n "$(which service 2>/dev/null)" ]
+        then
+                service apache2 start &>/dev/null
+        else
+                systemctl start apache2 &>/dev/null
+        fi
         echo -e "${YW}[INFO]${NC} The password for the default management user '${YW}management@wms.local${NC}' has been set to '${YW}${new_pass}${NC}'"
         echo -e ${YW}[INFO]${NC} Done! Do not forget to add the Mercure startup scripts to crontab!$'\n'
 fi
