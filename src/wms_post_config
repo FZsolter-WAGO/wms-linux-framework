@@ -37,19 +37,19 @@ else
         echo -e ${YW}[INFO]${NC} Changing the password of the default management user
         echo -e ${YW}[INFO]${NC} Do you want to generate a new password?
         select yn in "Yes" "No"; do
-        case $yn in
-                Yes )
-                        new_pass="$(openssl rand -hex 8)"
-                        bcrypt_hash="$(php -r "echo password_hash('$new_pass', PASSWORD_BCRYPT, ['cost' => 13]);")"
-                        mysql -u root -e "USE wms_management; UPDATE users SET password = '$bcrypt_hash' WHERE email = 'management@wms.local';" &>/dev/null
-                        echo -e "${YW}[INFO]${NC} The password for the default management user '${YW}management@wms.local${NC}' has been set to '${YW}${new_pass}${NC}'"
-                        exit
-                        ;;
-                No )
-                        echo -e "${YW}[INFO]${NC} The password for the default management user '${YW}management@wms.local${NC}' is unchanged"
-                        exit
-                        ;;
-        esac
+                case $yn in
+                        Yes )
+                                new_pass="$(openssl rand -hex 8)"
+                                bcrypt_hash="$(php -r "echo password_hash('$new_pass', PASSWORD_BCRYPT, ['cost' => 13]);")"
+                                mysql -u root -e "USE wms_management; UPDATE users SET password = '$bcrypt_hash' WHERE email = 'management@wms.local';" &>/dev/null
+                                echo -e "${YW}[INFO]${NC} The password for the default management user '${YW}management@wms.local${NC}' has been set to '${YW}${new_pass}${NC}'"
+                                break
+                                ;;
+                        No )
+                                echo -e "${YW}[INFO]${NC} The password for the default management user '${YW}management@wms.local${NC}' is unchanged"
+                                break
+                                ;;
+                esac
         done
         echo -e ${YW}[INFO]${NC} Starting Apache
         if [ -n "$(which service 2>/dev/null)" ]
