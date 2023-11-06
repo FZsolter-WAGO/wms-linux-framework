@@ -54,7 +54,7 @@
 #                                                                   #
 #   2.0.2   -   More things renamed to WMS                          #
 #                                                                   #
-#   2.0.3   -   Hotfix                                              #
+#   2.0.3   -   chmod fix and updating MySQL apt repo               #
 #                                                                   #
 #####################################################################
 
@@ -220,7 +220,7 @@ fi
 if [ -z "$(which mysql 2>/dev/null)" ]
 then
     echo -e "${YW}[INFO]${NC} Installing MySQL"
-    curl -sSLo ./mysql-apt-config.deb https://dev.mysql.com/get/mysql-apt-config_0.8.26-1_all.deb &>/dev/null
+    curl -sSLo ./mysql-apt-config.deb https://dev.mysql.com/get/mysql-apt-config_0.8.28-1_all.deb &>/dev/null
     dpkg -i ./mysql-apt-config.deb &>/dev/null
     rm ./mysql-apt-config.deb &>/dev/null
     apt -qq update &>/dev/null
