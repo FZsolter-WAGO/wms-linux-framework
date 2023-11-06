@@ -46,5 +46,5 @@ else
                 systemctl start apache2 &>/dev/null
         fi
         echo -e "${YW}[INFO]${NC} The password for the default management user '${YW}management@wms.local${NC}' has been set to '${YW}${new_pass}${NC}'"
-        echo -e ${YW}[INFO]${NC} Done! Do not forget to add the Mercure startup scripts to crontab!$'\n'
+        echo -e ${YW}[INFO]${NC} Done! Do not forget to add the Mercure startup script to crontab!$'\n'
 fi
