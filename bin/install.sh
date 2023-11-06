@@ -54,6 +54,8 @@
 #                                                                   #
 #   2.0.2   -   More things renamed to WMS                          #
 #                                                                   #
+#   2.0.3   -   Hotfix                                              #
+#                                                                   #
 #####################################################################
 
 # Wrapper function added in 1.0.2
@@ -308,6 +310,7 @@ then
 fi
 rm /var/www/wattson -Rf &>/dev/null
 rm /var/www/wms -Rf &>/dev/null
+chown root:www-data -R /var/www &>/dev/null
 tar -zxf $FOUND_PACKAGE -C /var/www/ &>/dev/null
 mv /var/www/wattson /var/www/wms &>/dev/null
 
