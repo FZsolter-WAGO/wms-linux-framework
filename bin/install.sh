@@ -56,6 +56,8 @@
 #                                                                   #
 #   2.0.3   -   chmod fix and updating MySQL apt repo               #
 #                                                                   #
+#   2.0.4   -   Increasing Apache2 PHP execution timeout            #
+#                                                                   #
 #####################################################################
 
 # Wrapper function added in 1.0.2
@@ -291,6 +293,7 @@ sed -i 's/.*post_max_size = .*/post_max_size = 512M/' /etc/php/8.1/apache2/php.i
 sed -i 's/.*memory_limit = .*/memory_limit = 1024M/' /etc/php/8.1/apache2/php.ini &>/dev/null
 sed -i 's/.*max_input_vars = .*/max_input_vars = 1000/' /etc/php/8.1/apache2/php.ini &>/dev/null
 sed -i 's/.*file_uploads = O.*/file_uploads = On/' /etc/php/8.1/apache2/php.ini &>/dev/null
+sed -i 's/.*max_execution_time = O.*/max_execution_time = 120/' /etc/php/8.1/apache2/php.ini &>/dev/null
 if [ -z "$(grep -n 'extension=ixed.8.1.lin' /etc/php/8.1/cli/php.ini 2>/dev/null)" ]
 then
     echo "extension=ixed.8.1.lin" >> /etc/php/8.1/cli/php.ini
