@@ -58,6 +58,8 @@
 #                                                                   #
 #   2.0.4   -   Increasing Apache2 PHP execution timeout            #
 #                                                                   #
+#   2.0.5   -   gnupg needed for MySQL installation                 #
+#                                                                   #
 #####################################################################
 
 # Wrapper function added in 1.0.2
@@ -223,6 +225,7 @@ if [ -z "$(which mysql 2>/dev/null)" ]
 then
     echo -e "${YW}[INFO]${NC} Installing MySQL"
     curl -sSLo ./mysql-apt-config.deb https://dev.mysql.com/get/mysql-apt-config_0.8.28-1_all.deb &>/dev/null
+    apt -qq install -y gnupg &>/dev/null
     dpkg -i ./mysql-apt-config.deb &>/dev/null
     rm ./mysql-apt-config.deb &>/dev/null
     apt -qq update &>/dev/null
