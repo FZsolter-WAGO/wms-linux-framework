@@ -1,6 +1,9 @@
 # WAGO Monitoring Solution Linux framework installer
 
-## Only Debian 10/11 and Ubuntu 22.04 are supported!
+## WARNING! Debian 10 is no longer supported!
+# In case of WAGO 752-9xxx Edge Computer the stock FW3 firmware version or a fresh generic installation should be used
+
+## Only Debian 11 and Ubuntu 22.04 are supported!
 
 Anything can have a mascot
 
