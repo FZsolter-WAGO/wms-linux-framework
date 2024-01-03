@@ -229,8 +229,8 @@ if [ -z "$(which mysql 2>/dev/null)" ]
 then
     echo -e "${YW}[INFO]${NC} Installing MySQL"
     curl -sSLo ./mysql-apt-config.deb https://dev.mysql.com/get/mysql-apt-config_0.8.29-1_all.deb &>/dev/null
-    apt -qq install -y gnupg &>/dev/null
-    dpkg -i ./mysql-apt-config.deb &>/dev/null
+    apt -qq install -y gnupg sudo &>/dev/null
+    sudo dpkg -i ./mysql-apt-config.deb &>/dev/null
     rm ./mysql-apt-config.deb &>/dev/null
     apt -qq update &>/dev/null
     apt -qq install mysql-server -y &>/dev/null
