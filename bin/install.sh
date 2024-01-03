@@ -1,8 +1,8 @@
 #!/bin/bash
 #####################################################################
 #                                                                   #
-#   WMS Linux framework installer for Debian 11 (bullseye),         #
-#   10 (buster) or Ubuntu 22.04 (jammy)                             #
+#   WMS Linux framework installer for Debian 11 (bullseye)          #
+#   or Ubuntu 22.04 (jammy)                                         #
 #                                                                   #
 #   This script should prepare an enviroment for WAGO Monitoring    #
 #   Solution by installing all the mandatory framework softwares,   #
@@ -62,6 +62,8 @@
 #                                                                   #
 #   2.0.6   -   Update to mysql-apt-config_0.8.29-1_all.deb         #
 #                                                                   #
+#   2.0.7   -   Debian 10 buster is no longer supported             #
+#                                                                   #
 #####################################################################
 
 # Wrapper function added in 1.0.2
@@ -78,7 +80,7 @@ NC='\033[0m'
 readonly SUPPORTED_WMS_VERSIONS=("3.4.4" "3.5.4")
 
 echo -e ""
-echo -e "${GN}WMS Linux framework and software installer for Debian 11 (bullseye), 10 (buster) or Ubuntu 22.04 (jammy)${NC}"
+echo -e "${GN}WMS Linux framework and software installer for Debian 11 (bullseye) or Ubuntu 22.04 (jammy)${NC}"
 # apt will be used and many other things
 # Only root can run the script
 if [ "$EUID" -ne 0 ]
@@ -186,7 +188,7 @@ fi
 # We know that Debian dists need to be appended with a PHP repository
 CURRENT_DIST="$(lsb_release -sc 2>/dev/null)"
 case "$CURRENT_DIST" in
-    bullseye|buster)
+    bullseye)
     echo -e "${YW}[INFO]${NC} Debian detected"
     echo -e "${YW}[INFO]${NC} Installing deb.sury.org for PHP8.1"
     apt -qq -y install ca-certificates curl &>/dev/null
@@ -204,8 +206,10 @@ case "$CURRENT_DIST" in
     jammy)
     echo -e "${YW}[INFO]${NC} Ubuntu 22.04 jammy detected"
     ;;
+    buster)
+    echo -e "${YW}[INFO]${NC} Debian 10 buster detected"
     *)
-    echo -e "${RD}[ERR]${NC} Only Debian 10 buster or 11 bullseye and Ubuntu 22.04 jammy are supported"
+    echo -e "${RD}[ERR]${NC} Only Debian 11 bullseye and Ubuntu 22.04 jammy are supported"
     exit -1
     ;;
 esac
