@@ -206,8 +206,6 @@ case "$CURRENT_DIST" in
     jammy)
     echo -e "${YW}[INFO]${NC} Ubuntu 22.04 jammy detected"
     ;;
-    buster)
-    echo -e "${YW}[INFO]${NC} Debian 10 buster detected"
     *)
     echo -e "${RD}[ERR]${NC} Only Debian 11 bullseye and Ubuntu 22.04 jammy are supported"
     exit -1
