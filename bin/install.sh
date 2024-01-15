@@ -1,8 +1,7 @@
 #!/bin/bash
 #####################################################################
 #                                                                   #
-#   WMS Linux framework installer for Debian 11 (bullseye)          #
-#   or Ubuntu 22.04 (jammy)                                         #
+#   WMS Linux framework installer for Ubuntu 22.04 (jammy)          #
 #                                                                   #
 #   This script should prepare an enviroment for WAGO Monitoring    #
 #   Solution by installing all the mandatory framework softwares,   #
@@ -64,6 +63,8 @@
 #                                                                   #
 #   2.0.7   -   Debian 10 buster is no longer supported             #
 #                                                                   #
+#   2.0.8   -   Debian is not supported at all currently            #
+#                                                                   #
 #####################################################################
 
 # Wrapper function added in 1.0.2
@@ -80,7 +81,7 @@ NC='\033[0m'
 readonly SUPPORTED_WMS_VERSIONS=("3.4.4" "3.5.4")
 
 echo -e ""
-echo -e "${GN}WMS Linux framework and software installer for Debian 11 (bullseye) or Ubuntu 22.04 (jammy)${NC}"
+echo -e "${GN}WMS Linux framework and software installer for Ubuntu 22.04 (jammy)${NC}"
 # apt will be used and many other things
 # Only root can run the script
 if [ "$EUID" -ne 0 ]
@@ -185,29 +186,14 @@ then
         exit -1
     fi
 fi
-# We know that Debian dists need to be appended with a PHP repository
+# Dist check
 CURRENT_DIST="$(lsb_release -sc 2>/dev/null)"
 case "$CURRENT_DIST" in
-    bullseye)
-    echo -e "${YW}[INFO]${NC} Debian detected"
-    echo -e "${YW}[INFO]${NC} Installing deb.sury.org for PHP8.1"
-    apt -qq -y install ca-certificates curl &>/dev/null
-    if [ -z "$(which curl 2>/dev/null)" ]
-    then
-        echo -e "${RD}[ERR]${NC} Could not install curl!"
-        exit -1
-    fi
-    rm /usr/share/keyrings/deb.sury.org-php.gpg -f &>/dev/null
-    rm /etc/apt/sources.list.d/php.list -f &>/dev/null
-    curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg &>/dev/null
-    echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
-    apt -qq update &>/dev/null
-    ;;
     jammy)
     echo -e "${YW}[INFO]${NC} Ubuntu 22.04 jammy detected"
     ;;
     *)
-    echo -e "${RD}[ERR]${NC} Only Debian 11 bullseye and Ubuntu 22.04 jammy are supported"
+    echo -e "${RD}[ERR]${NC} Only Ubuntu 22.04 jammy is supported"
     exit -1
     ;;
 esac
@@ -230,7 +216,7 @@ then
     echo -e "${YW}[INFO]${NC} Installing MySQL"
     curl -sSLo ./mysql-apt-config.deb https://dev.mysql.com/get/mysql-apt-config_0.8.29-1_all.deb &>/dev/null
     apt -qq install -y gnupg sudo &>/dev/null
-    sudo DEBIAN_FRONTEND=noninteractive dpkg -i ./mysql-apt-config.deb &>/dev/null
+    sudo _FRONTEND=noninteractive dpkg -i ./mysql-apt-config.deb &>/dev/null
     rm ./mysql-apt-config.deb &>/dev/null
     apt -qq update &>/dev/null
     apt -qq install mysql-server -y &>/dev/null
