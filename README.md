@@ -1,7 +1,7 @@
 # WAGO Monitoring Solution Linux framework installer
 
 ## WARNING! Debian is not supported currently, therefore WAGO stock firmware neither!
-### This is because of an unfortunate PHP error while using the newest 8.1.27 version. Since a new release is planned that will be using PHP8.2 the issue will not be fixed. 
+### This is because of an unfortunate PHP error while using >8.1.26 versions. Since a new release is planned that will be using PHP8.2 the issue will not be fixed. 
 
 ## Only Ubuntu 22.04 is supported!
 
