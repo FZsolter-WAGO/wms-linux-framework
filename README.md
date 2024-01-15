@@ -1,9 +1,9 @@
 # WAGO Monitoring Solution Linux framework installer
 
-## WARNING! Debian 10 is no longer supported!
-### In case of WAGO 752-9xxx Edge Computer the stock FW3 firmware version or a fresh generic installation should be used
+## WARNING! Debian is not supported currently, therefore WAGO stock firmware neither!
+### This is because of an unfortunate PHP error caused by the newest 8.1.27 version. Since a new release is planned that will be using PHP8.2 the issue will not be fixed. 
 
-## Only Debian 11 and Ubuntu 22.04 are supported!
+## Only Ubuntu 22.04 is supported!
 
 Anything can have a mascot
 
@@ -11,7 +11,7 @@ Anything can have a mascot
 
 ### Usage
 
-0) Login as root via SSH, or in case of WAGO 752-9xxx Edge Computer via browser at https://<server_ip>:9090/ using the Cockpit web application
+0) Login as root via SSH
 1) Configure network settings to access the Internet
 2) Remove any Docker installation (the docker0 network interface is constantly changing its MAC address, so the license key will change every time the server is restarted)
 
