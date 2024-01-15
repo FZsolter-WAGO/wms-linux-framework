@@ -14,7 +14,7 @@
 #   <support.hu@wago.com>                                           #
 #                                                                   #
 #   Version history:                                                #
-#   1.0.0   -   Initial release                                     #
+#   1.0.0   -   Initial release                                     #_
 #               PHP8.1 + Apache2 + MariaDB                          #
 #               Installing every needed PHP8.1 modules              #
 #               Removing the default /var/www/html site from        #
@@ -216,7 +216,7 @@ then
     echo -e "${YW}[INFO]${NC} Installing MySQL"
     curl -sSLo ./mysql-apt-config.deb https://dev.mysql.com/get/mysql-apt-config_0.8.29-1_all.deb &>/dev/null
     apt -qq install -y gnupg sudo &>/dev/null
-    sudo _FRONTEND=noninteractive dpkg -i ./mysql-apt-config.deb &>/dev/null
+    sudo DEBIAN_FRONTEND=noninteractive dpkg -i ./mysql-apt-config.deb &>/dev/null
     rm ./mysql-apt-config.deb &>/dev/null
     apt -qq update &>/dev/null
     apt -qq install mysql-server -y &>/dev/null
