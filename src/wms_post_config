@@ -34,6 +34,7 @@ else
         /usr/sbin/a2ensite wms.conf &>/dev/null
         mysql -u root -e "USE wms_management; UPDATE users SET email = 'management@wms.local' WHERE email = 'management@wattson.local';" &>/dev/null
         mysql -u root -e "USE wms_management; UPDATE users SET last_name = 'WMS' WHERE email = 'management@wms.local';" &>/dev/null
+        mysql -u root -e "USE wms_management; UPDATE users SET language = 'en' WHERE email = 'management@wms.local';" &>/dev/null
         echo -e ${YW}[INFO]${NC} Changing the password of the default management user
         echo -e ${YW}[INFO]${NC} Do you want to generate a new password?
         select yn in "Yes" "No"; do
