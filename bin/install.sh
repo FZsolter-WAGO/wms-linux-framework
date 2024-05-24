@@ -78,7 +78,7 @@ RD='\033[0;31m'
 NC='\033[0m'
 
 # Global constants
-readonly SUPPORTED_WMS_VERSIONS=("3.4.4" "3.5.4")
+readonly SUPPORTED_WMS_VERSIONS=("3.4.4" "3.5.4" "3.7.7")
 
 echo -e ""
 echo -e "${GN}WMS Linux framework and software installer for Ubuntu 22.04 (jammy)${NC}"
