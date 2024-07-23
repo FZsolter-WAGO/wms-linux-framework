@@ -1,3 +1,6 @@
+# The new installer is available at https://wms-installer.wago.ms/overview.html . This installer will be deprecated soon.
+
+
 # WAGO Monitoring Solution Linux framework installer
 
 ## WARNING! Debian is not supported currently, therefore WAGO stock firmware neither!
