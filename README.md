@@ -1,4 +1,5 @@
-# The new installer is available at https://wms-installer.wago.ms/overview.html . This installer will be deprecated soon.
+# DEPRECATED
+# The new installer is available at https://wms-installer.wago.ms/overview.html .
 
 
 # WAGO Monitoring Solution Linux framework installer
